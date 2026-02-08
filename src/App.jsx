@@ -56,11 +56,12 @@ const App = () => {
   }, []);
 
   // Check if briefing is empty and trigger onboarding (only when authenticated)
-  useEffect(() => {
-    if (isAuthenticated && (!briefing || briefing.trim() === '')) {
-      setTimeout(() => setIsBriefingOpen(true), 1500);
-    }
-  }, [briefing, isAuthenticated]);
+  // REMOVED: Auto-open briefing modal. User can open it from settings.
+  // useEffect(() => {
+  //   if (isAuthenticated && (!briefing || briefing.trim() === '')) {
+  //     setTimeout(() => setIsBriefingOpen(true), 1500);
+  //   }
+  // }, [briefing, isAuthenticated]);
 
   // Check WhatsApp connection status (only when authenticated)
   useEffect(() => {

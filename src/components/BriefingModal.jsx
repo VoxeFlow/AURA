@@ -69,8 +69,8 @@ REGRAS DE OURO: ${answers.rules}
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content glass-panel" style={{ width: '650px', padding: '0' }} onClick={e => e.stopPropagation()}>
+        <div className="modal-overlay" onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="modal-content glass-panel" style={{ width: '90%', maxWidth: '650px', padding: '0', maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
                 <div className="briefing-header" style={{
                     padding: '30px',
                     background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',

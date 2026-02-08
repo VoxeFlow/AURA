@@ -42,7 +42,9 @@ class WhatsAppService {
     async logoutInstance() {
         const { instanceName } = useStore.getState();
         if (!instanceName) return null;
-        return await this.request(`/instance/logout/${instanceName}`, 'DELETE');
+        // CRITICAL: Delete the instance to clear all data (chats, messages) from the backend
+        // This ensures that if the user connects a different number, no old data remains.
+        return await this.request(`/instance/delete/${instanceName}`, 'DELETE');
     }
 
     standardizeJid(jid) {
