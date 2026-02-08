@@ -25,10 +25,34 @@ const App = () => {
 
   // AUTH: Check localStorage for authentication token
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      setIsAuthenticated(true);
-    }
+    const checkAuth = () => {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      try {
+        // Simple validation: Decode token and check prefix
+        const decoded = atob(token);
+        if (decoded.startsWith('authenticated:')) {
+          setIsAuthenticated(true);
+        } else {
+          console.warn('AURA: Invalid token format, logging out');
+          localStorage.removeItem('auth_token');
+          setIsAuthenticated(false);
+        }
+      } catch (e) {
+        console.error('AURA: Token validation error', e);
+        localStorage.removeItem('auth_token');
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+    // Also listen for storage changes (multi-tab logout support)
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
   // Check if briefing is empty and trigger onboarding (only when authenticated)
