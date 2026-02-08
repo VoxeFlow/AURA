@@ -40,7 +40,7 @@ export default function LoginScreen({ onLogin }) {
                         </svg>
                     </div>
                     <h1>AURA</h1>
-                    <p className="subtitle">Dentista Copiloto v2</p>
+                    <p className="subtitle">Business Copilot</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="login-form">

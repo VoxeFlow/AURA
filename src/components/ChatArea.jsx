@@ -67,9 +67,9 @@ const ChatArea = ({ isArchived = false }) => {
         try {
             // 1. EXTRACT BASIC CONTEXT
             const rawName = activeChat.name || "";
-            // Sanitize: If name is just numbers or JID-like, use "Paciente"
+            // Sanitize: If name is just numbers or JID-like, use "Cliente"
             const isNumeric = /^\d+$/.test(rawName.replace(/\D/g, ''));
-            const patientName = (isNumeric || rawName.includes('@') || !rawName) ? "Paciente" : rawName;
+            const clientName = (isNumeric || rawName.includes('@') || !rawName) ? "Cliente" : rawName;
 
             const historyText = messages.slice(-10).map(m => {
                 const isMe = m.key?.fromMe || m.fromMe; // Compatibility for both structures
@@ -79,30 +79,30 @@ const ChatArea = ({ isArchived = false }) => {
                     m.content ||
                     m.text ||
                     "";
-                return `${isMe ? 'Clínica' : 'Paciente'}: ${text}`;
+                return `${isMe ? 'Empresa' : 'Cliente'}: ${text}`;
             }).join('\n');
 
-            const lastPatientMsg = [...messages].reverse().find(m => !(m.key?.fromMe || m.fromMe));
-            const lastPatientText = lastPatientMsg?.message?.conversation ||
-                lastPatientMsg?.message?.extendedTextMessage?.text ||
-                lastPatientMsg?.content ||
-                lastPatientMsg?.text ||
+            const lastClientMsg = [...messages].reverse().find(m => !(m.key?.fromMe || m.fromMe));
+            const lastClientText = lastClientMsg?.message?.conversation ||
+                lastClientMsg?.message?.extendedTextMessage?.text ||
+                lastClientMsg?.content ||
+                lastClientMsg?.text ||
                 "";
 
             setSuggestion(`Aura Orquestrador v8.5: Analisando intenção e buscando dados...`);
 
             // 2. RAG ORCHESTRATION (AURA v8.5)
             const RAGService = (await import('../services/rag')).default;
-            const extraContext = await RAGService.getRelevantContext(lastPatientText);
+            const extraContext = await RAGService.getRelevantContext(lastClientText);
 
             console.log("AURA RAG: Contexto recuperado:", extraContext);
 
             // 3. GENERATE AI SUGGESTION
             const { default: OpenAIService } = await import('../services/openai');
             const aiRes = await OpenAIService.generateSuggestion({
-                patientName,
+                clientName,
                 history: historyText,
-                briefing: briefing || "Clínica Odontológica de Alta Performance",
+                briefing: briefing || "Negócio de Alta Performance",
                 extraContext
             });
 
@@ -382,7 +382,7 @@ const ChatArea = ({ isArchived = false }) => {
             <div className="empty-dashboard">
                 <Bot size={64} color="var(--accent-primary)" style={{ opacity: 0.5 }} />
                 <h2>AURA v3 Dashboard</h2>
-                <p>Selecione um paciente para iniciar a consultoria de vendas</p>
+                <p>Selecione um cliente para iniciar a consultoria de vendas</p>
             </div>
         );
     }

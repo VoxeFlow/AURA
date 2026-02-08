@@ -1,20 +1,20 @@
 const MASTER_AI_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 class OpenAIService {
-    async generateSuggestion({ patientName, history, briefing, extraContext = "" }) {
+    async generateSuggestion({ clientName, history, briefing, extraContext = "" }) {
         const openaiKey = MASTER_AI_KEY;
         if (!openaiKey) return null;
 
-        const historyPrompt = typeof history === 'string' ? history : (Array.isArray(history) ? history.slice(-10).map(m => `${m.isMe ? 'Vendedor' : 'Paciente'}: ${m.text}`).join('\n') : "");
+        const historyPrompt = typeof history === 'string' ? history : (Array.isArray(history) ? history.slice(-10).map(m => `${m.isMe ? 'Vendedor' : 'Cliente'}: ${m.text}`).join('\n') : "");
 
         // Extract last 3 messages for better context
         const recentMessages = historyPrompt.split('\n').slice(-6).join('\n');
-        const lastPatientMsg = historyPrompt.split('\n').filter(line => line.startsWith('Paciente:')).pop() || "";
+        const lastClientMsg = historyPrompt.split('\n').filter(line => line.startsWith('Cliente:')).pop() || "";
 
         const systemPrompt = `
-Você é um consultor de vendas EXPERT em odontologia de alto padrão. Sua missão é converter leads em agendamentos.
+Você é um consultor de vendas EXPERT. Sua missão é converter leads em agendamentos.
 
-CONTEXTO DA CLÍNICA:
+CONTEXTO DO NEGÓCIO:
 ${briefing}
 
 ${extraContext ? `INFORMAÇÃO TÉCNICA RELEVANTE:\n${extraContext}\n` : ''}
@@ -22,8 +22,8 @@ ${extraContext ? `INFORMAÇÃO TÉCNICA RELEVANTE:\n${extraContext}\n` : ''}
 HISTÓRICO RECENTE DA CONVERSA:
 ${recentMessages}
 
-ÚLTIMA MENSAGEM DO PACIENTE:
-${lastPatientMsg}
+ÚLTIMA MENSAGEM DO CLIENTE:
+${lastClientMsg}
 
 INTELIGÊNCIA DE RESPOSTA - SIGA RIGOROSAMENTE:
 
@@ -34,7 +34,7 @@ INTELIGÊNCIA DE RESPOSTA - SIGA RIGOROSAMENTE:
 
 2. REGRAS DE OURO:
    - MÁXIMO 2-3 linhas (WhatsApp é rápido!)
-   - Use o NOME do paciente quando apropriado (${patientName !== 'Paciente' ? patientName : 'mas evite "Paciente" genérico'})
+   - Use o NOME do cliente quando apropriado (${clientName !== 'Cliente' ? clientName : 'mas evite "Cliente" genérico'})
    - NUNCA repita informações já ditas
    - NUNCA dê valores exatos (sempre "varia conforme o caso")
    - SEMPRE conduza para AGENDAMENTO
@@ -69,7 +69,7 @@ INTELIGÊNCIA DE RESPOSTA - SIGA RIGOROSAMENTE:
    - Máximo 1 emoji por mensagem (use com sabedoria)
 
 5. PROIBIDO:
-   - Frases robóticas ("Claro, Paciente!")
+   - Frases robóticas ("Claro, Cliente!")
    - Jargões técnicos desnecessários
    - Textos longos (mais de 3 linhas)
    - Repetir informações já ditas
@@ -89,7 +89,7 @@ AGORA GERE A MELHOR RESPOSTA POSSÍVEL. Apenas a resposta, sem explicações.
                     model: 'gpt-4o',
                     messages: [
                         { role: 'system', content: systemPrompt },
-                        { role: 'user', content: 'Gere a melhor resposta estratégica para a última mensagem do paciente.' }
+                        { role: 'user', content: 'Gere a melhor resposta estratégica para a última mensagem do cliente.' }
                     ],
                     temperature: 0.85, // Balanced for natural variation
                     max_tokens: 200 // Allow slightly longer for complete thoughts
@@ -242,7 +242,7 @@ Retorne APENAS o texto corrigido, sem explicações.
 Você é um consultor de vendas EXPERT em odontologia.
 
 CONTEXTO:
-- Paciente: ${patientName}
+- Cliente: ${clientName}
 - Estágio Atual: ${currentTag}
 
 HISTÓRICO DA CONVERSA:

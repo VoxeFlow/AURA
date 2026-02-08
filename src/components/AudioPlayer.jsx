@@ -91,7 +91,7 @@ const AudioPlayer = ({ messageKey }) => {
                 style={{ display: 'none' }}
             />
             <span style={{ fontSize: '12px', marginLeft: '8px', color: 'rgba(255,255,255,0.7)' }}>
-                {isPlaying ? 'Reproduzindo...' : 'Áudio do paciente'}
+                {isPlaying ? 'Reproduzindo...' : 'Áudio do cliente'}
             </span>
         </div>
     );

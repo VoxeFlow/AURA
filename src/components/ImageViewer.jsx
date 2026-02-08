@@ -42,7 +42,7 @@ const ImageViewer = ({ messageKey, caption }) => {
         <div className="image-message">
             <img
                 src={imageUrl}
-                alt="Imagem do paciente"
+                alt="Imagem do cliente"
                 style={{
                     maxWidth: '300px',
                     maxHeight: '300px',
