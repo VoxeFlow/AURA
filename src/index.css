@@ -105,7 +105,7 @@ input:focus {
   box-shadow: 0 0 10px rgba(197, 160, 89, 0.1);
 }
 
-/* Sidebar Styles (Light Premium) */
+/* Sidebar Styles (Restored Dark Premium) */
 .sidebar {
   width: 100px;
   display: flex;
@@ -114,8 +114,10 @@ input:focus {
   padding: 30px 0;
   height: 100%;
   border-right: 1px solid var(--glass-border);
-  background: var(--bg-sidebar);
+  background: #121212;
+  /* RESTORED: Dark Background */
   transition: width 0.3s ease;
+  z-index: 20;
 }
 
 .sidebar:hover {
@@ -139,8 +141,9 @@ input:focus {
 }
 
 .sidebar li {
-  color: #1d1d1f;
-  opacity: 0.4;
+  color: #FFFFFF;
+  /* RESTORED: White text for dark mode */
+  opacity: 0.5;
   padding: 12px;
   border-radius: 16px;
   cursor: pointer;
@@ -151,12 +154,12 @@ input:focus {
 .sidebar li.active {
   color: var(--accent-primary);
   opacity: 1;
-  background: rgba(197, 160, 89, 0.08);
+  background: rgba(197, 160, 89, 0.15);
 }
 
 .sidebar-footer {
   margin-top: auto;
-  color: var(--text-muted);
+  color: #86868b;
 }
 
 /* ChatList Styles (Light) */
@@ -225,7 +228,7 @@ input:focus {
 }
 
 .chat-item:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .chat-item.active {
@@ -364,7 +367,7 @@ input:focus {
 }
 
 .message {
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 12px;
   max-width: 85%;
   font-size: 13px;
@@ -377,14 +380,19 @@ input:focus {
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   color: var(--text-main);
+  border-top-left-radius: 2px;
 }
 
 .message.out {
   align-self: flex-end;
-  background: #F1E9D6;
-  border: 1px solid rgba(197, 160, 89, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  color: var(--text-main);
+  background: var(--aura-gold);
+  /* RESTORED: Aura Gold bubbles */
+  color: white;
+  /* RESTORED: White text on gold */
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+  border: none;
+  border-top-right-radius: 2px;
+  font-weight: 500;
 }
 
 .analysis-column {
