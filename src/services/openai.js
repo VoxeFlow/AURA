@@ -117,10 +117,10 @@ AGORA GERE A MELHOR RESPOSTA POSSÍVEL. Apenas a resposta, sem explicações.
         if (!openaiKey || !text.trim()) return text;
 
         const systemPrompt = `
-Você é um assistente de escrita especializado em comunicação profissional para clínicas odontológicas.
+Você é um assistente de escrita especializado em comunicação profissional para empresas.
 
-CONTEXTO DA CLÍNICA:
-${context.briefing || 'Clínica odontológica de alto padrão'}
+CONTEXTO DA EMPRESA:
+${context.briefing || 'Empresa de Alto Padrão'}
 
 MISSÃO: Melhorar a mensagem do usuário mantendo SUA ESSÊNCIA e INTENÇÃO.
 
@@ -131,20 +131,6 @@ REGRAS CRÍTICAS:
 4. SEJA CONCISO: não adicione informações desnecessárias
 5. MELHORE a clareza sem perder naturalidade
 6. Se já estiver bom, faça apenas ajustes mínimos
-
-EXEMPLOS:
-
-Input: "oila como vai vocie"
-Output: "Olá! Como vai você?"
-
-Input: "bom dia, gostaria de saber sobre implante"
-Output: "Bom dia! Gostaria de saber sobre implante."
-
-Input: "vc atende sabado? presiso marcar"
-Output: "Você atende sábado? Preciso marcar."
-
-Input: "Boa tarde, estou interessado em fazer uma avaliação para implante dentário"
-Output: "Boa tarde! Estou interessado em fazer uma avaliação para implante dentário."
 
 IMPORTANTE: Retorne APENAS o texto corrigido, sem aspas, sem explicações, sem comentários.
         `.trim();
@@ -170,64 +156,13 @@ IMPORTANTE: Retorne APENAS o texto corrigido, sem aspas, sem explicações, sem 
             const data = await response.json();
             if (data.error) {
                 console.error("OpenAI API Error:", data.error);
-                return null;
+                return text;
             }
 
             return data.choices[0].message.content.trim();
         } catch (e) {
             console.error("OpenAI Fetch Error:", e);
-            return null;
-        }
-    }
-
-    async enhanceMessage(text, context = {}) {
-        const openaiKey = MASTER_AI_KEY;
-        if (!openaiKey || !text.trim()) return text;
-
-        const systemPrompt = `
-Você é um assistente de escrita que corrige e melhora mensagens para WhatsApp.
-
-REGRAS:
-1. Corrija TODOS os erros de ortografia e gramática
-2. Mantenha o TOM ORIGINAL do usuário (não formalize demais)
-3. Mantenha a INTENÇÃO original (não mude o significado)
-4. Seja CONCISO: não adicione informações desnecessárias
-5. Se já estiver bom, retorne o texto original com pequenos ajustes
-
-CONTEXTO:
-${context.briefing || 'Clínica odontológica'}
-
-Retorne APENAS o texto corrigido, sem explicações.
-        `.trim();
-
-        try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${openaiKey}`
-                },
-                body: JSON.stringify({
-                    model: 'gpt-4o-mini', // Faster model for simple corrections
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: `Corrija e melhore: "${text}"` }
-                    ],
-                    temperature: 0.3, // Lower for consistent corrections
-                    max_tokens: 200
-                })
-            });
-
-            const data = await response.json();
-            if (data.error) {
-                console.error("OpenAI Enhance Error:", data.error);
-                return text; // Return original on error
-            }
-
-            return data.choices[0].message.content.trim();
-        } catch (e) {
-            console.error("OpenAI Enhance Fetch Error:", e);
-            return text; // Return original on error
+            return text;
         }
     }
 
@@ -242,10 +177,10 @@ Retorne APENAS o texto corrigido, sem explicações.
         }
 
         const systemPrompt = `
-Você é um consultor de vendas EXPERT em odontologia.
+Você é um consultor de vendas EXPERT em orquestração de negócios.
 
 CONTEXTO:
-- Cliente: ${clientName}
+- Cliente: ${patientName}
 - Estágio Atual: ${currentTag}
 
 HISTÓRICO DA CONVERSA:
