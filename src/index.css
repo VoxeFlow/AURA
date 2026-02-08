@@ -127,7 +127,10 @@ input:focus {
 .logo-container h1 {
   font-size: 22px;
   font-weight: 800;
-  color: var(--accent-primary);
+  color: #FFFFFF;
+  /* CHANGED: White Text */
+  text-shadow: 0 0 15px rgba(197, 160, 89, 0.6);
+  /* ADDED: Gold Shadow */
   margin-bottom: 50px;
   text-transform: uppercase;
   letter-spacing: 2px;
