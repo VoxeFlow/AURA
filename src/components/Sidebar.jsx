@@ -20,24 +20,45 @@ const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing, onLogout }) => {
                     <li className={currentView === 'history' ? 'active' : ''} onClick={() => setCurrentView('history')} title="Histórico">
                         <History size={24} />
                     </li>
-                    <li title="Configurações Aura" onClick={onOpenConfig}><Settings size={24} /></li>
                 </ul>
             </nav>
 
             <div className="sidebar-footer">
-                <div className="conn-status" style={{ fontSize: '10px', opacity: 0.5, marginBottom: '10px', textAlign: 'center', wordBreak: 'break-all', padding: '0 10px' }}>
-                    {activeChat?.id ? 'ID: ' + activeChat.id : ''}
+                <div style={{ padding: '10px 0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
+                    <div
+                        title="Configurações Aura"
+                        onClick={onOpenConfig}
+                        style={{
+                            cursor: 'pointer',
+                            padding: '10px',
+                            borderRadius: '12px',
+                            color: 'var(--text-muted)',
+                            transition: 'all 0.3s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-primary)'; e.currentTarget.style.background = 'rgba(197, 160, 89, 0.1)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
+                    >
+                        <Settings size={22} />
+                    </div>
+
+                    <button
+                        onClick={onLogout}
+                        className="logout-button"
+                        title="Sair"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px', width: '100%', color: 'var(--text-muted)', transition: 'color 0.2s' }}
+                        onMouseEnter={(e) => e.target.style.color = '#ff4d4d'}
+                        onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
+                    >
+                        <LogOut size={20} />
+                    </button>
+
+                    <div className="conn-status" style={{ fontSize: '8px', opacity: 0.3, marginTop: '5px', textAlign: 'center', wordBreak: 'break-all', padding: '0 5px' }}>
+                        {activeChat?.id ? activeChat.id : ''}
+                    </div>
                 </div>
-                <button
-                    onClick={onLogout}
-                    className="logout-button"
-                    title="Sair"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', width: '100%', color: 'var(--text-muted)', transition: 'color 0.2s' }}
-                    onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
-                    onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
-                >
-                    <LogOut size={20} />
-                </button>
             </div>
         </aside>
     );
