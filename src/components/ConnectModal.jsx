@@ -10,6 +10,8 @@ const ConnectModal = ({ isOpen, onClose }) => {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState('checking');
     const [socket, setSocket] = useState(null);
+    // FIX: Counter to force WebSocket recreation when clicking "Conectar" after logout
+    const [connecting, setConnecting] = useState(0);
 
     const checkStatus = async () => {
         const s = await WhatsAppService.checkConnection();
@@ -117,11 +119,13 @@ const ConnectModal = ({ isOpen, onClose }) => {
                 newSocket.disconnect();
             }
         };
-    }, [isOpen, instanceName, isConnected, apiUrl]);
+    }, [isOpen, instanceName, isConnected, apiUrl, loading, connecting]); // FIX: Added loading and connecting to dependencies
 
     const handleConnect = async () => {
         setLoading(true);
         setQrCode(null);
+        // FIX: Force WebSocket useEffect to re-run by incrementing counter
+        setConnecting(prev => prev + 1);
         try {
             // Restart instance to trigger new QR code generation
             // The QR code will be received via WebSocket qrcode.updated event
