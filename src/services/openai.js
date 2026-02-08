@@ -82,11 +82,10 @@ AGORA GERE A MELHOR RESPOSTA POSSÍVEL. Apenas a resposta, sem explicações.
         `.trim();
 
         try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('/api/ai', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${openaiKey}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     model: 'gpt-4o',
@@ -94,20 +93,20 @@ AGORA GERE A MELHOR RESPOSTA POSSÍVEL. Apenas a resposta, sem explicações.
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: 'Gere a melhor resposta estratégica para a última mensagem do cliente.' }
                     ],
-                    temperature: 0.85, // Balanced for natural variation
-                    max_tokens: 200 // Allow slightly longer for complete thoughts
+                    temperature: 0.85,
+                    max_tokens: 200
                 })
             });
 
             const data = await response.json();
             if (data.error) {
-                console.error("OpenAI API Error:", data.error);
+                console.error("AURA AI Proxy Error:", data.error);
                 return null;
             }
 
             return data.choices[0].message.content.trim();
         } catch (e) {
-            console.error("OpenAI Fetch Error:", e);
+            console.error("AURA AI Proxy Fetch Error:", e);
             return null;
         }
     }
@@ -136,32 +135,31 @@ IMPORTANTE: Retorne APENAS o texto corrigido, sem aspas, sem explicações, sem 
         `.trim();
 
         try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('/api/ai', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${openaiKey}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'gpt-4o-mini', // Faster model for corrections
+                    model: 'gpt-4o-mini',
                     messages: [
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: text }
                     ],
-                    temperature: 0.2, // Low for consistent corrections
+                    temperature: 0.2,
                     max_tokens: 250
                 })
             });
 
             const data = await response.json();
             if (data.error) {
-                console.error("OpenAI API Error:", data.error);
+                console.error("AURA AI Proxy Error:", data.error);
                 return text;
             }
 
             return data.choices[0].message.content.trim();
         } catch (e) {
-            console.error("OpenAI Fetch Error:", e);
+            console.error("AURA AI Proxy Fetch Error:", e);
             return text;
         }
     }
@@ -208,11 +206,10 @@ RETORNE EM JSON:
         `.trim();
 
         try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('/api/ai', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${openaiKey}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     model: 'gpt-4o',
