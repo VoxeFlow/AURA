@@ -49,10 +49,12 @@ class WhatsAppService {
     async createInstance(name) {
         if (!name) return null;
         console.log(`AURA: Creating instance ${name}...`);
+        // FIX: Use proven payload for Evolution API v2
         return await this.request('/instance/create', 'POST', {
             instanceName: name,
-            token: name, // simple token
-            qrcode: true
+            token: name,
+            qrcode: false,
+            integration: 'WHATSAPP-BAILEYS'
         });
     }
 
