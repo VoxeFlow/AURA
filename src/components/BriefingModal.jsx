@@ -74,7 +74,9 @@ REGRAS DE OURO: ${answers.rules}
                 <div className="briefing-header" style={{
                     padding: '30px',
                     background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
-                    borderBottom: '1px solid var(--glass-border)'
+                    borderBottom: '1px solid var(--glass-border)',
+                    borderTopLeftRadius: '20px', // FIX: Match container radius
+                    borderTopRightRadius: '20px' // FIX: Match container radius
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>

@@ -3,7 +3,10 @@ const MASTER_AI_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 class OpenAIService {
     async generateSuggestion({ clientName, history, briefing, extraContext = "" }) {
         const openaiKey = MASTER_AI_KEY;
-        if (!openaiKey) return null;
+        if (!openaiKey) {
+            console.error("AURA: OpenAI API Key missing in environment variables");
+            return "⚠️ ERRO: Chave da OpenAI não configurada no Cloudflare (VITE_OPENAI_API_KEY).";
+        }
 
         const historyPrompt = typeof history === 'string' ? history : (Array.isArray(history) ? history.slice(-10).map(m => `${m.isMe ? 'Vendedor' : 'Cliente'}: ${m.text}`).join('\n') : "");
 
