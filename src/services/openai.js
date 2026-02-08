@@ -4,59 +4,49 @@ class OpenAIService {
     async generateSuggestion({ clientName, history, briefing, extraContext = "" }) {
         const openaiKey = MASTER_AI_KEY;
         if (!openaiKey) {
-            console.error("AURA: OpenAI API Key missing in environment variables");
-            return "⚠️ ERRO: Chave da OpenAI não configurada no Cloudflare (VITE_OPENAI_API_KEY).";
+            console.error("AURA: OpenAI API Key missing");
+            return "⚠️ ERRO: Chave da OpenAI não configurada.";
         }
 
-        const historyPrompt = typeof history === 'string' ? history : (Array.isArray(history) ? history.slice(-10).map(m => `${m.isMe ? 'Vendedor' : 'Cliente'}: ${m.text}`).join('\n') : "");
-
-        // Extract last 3 messages for better context
-        const recentMessages = historyPrompt.split('\n').slice(-6).join('\n');
-        const lastClientMsg = historyPrompt.split('\n').filter(line => line.startsWith('Cliente:')).pop() || "";
-
         const systemPrompt = `
-Você é o Orquestrador da AURA, um consultor de vendas de alto nível.
+Você é o Orquestrador da AURA, um consultor de vendas EXPERT focado em conversão extrema.
 
 CONTEXTO DO NEGÓCIO:
 ${briefing}
 
-${extraContext ? `DADOS TÉCNICOS ESPECÍFICOS:\n${extraContext}\n` : ''}
+${extraContext ? `DADOS TÉCNICOS ESPECÍFICOS PARA ESTA CONVERSA:\n${extraContext}\n` : ''}
 
-ORDEM CRONOLÓGICA DAS MENSAGENS (A última é a mais recente):
-${historyPrompt}
+DIRETRIZES TÁTICAS (ORDEM DE IMPORTÂNCIA):
 
-SITUAÇÃO ATUAL:
-- Cliente: ${clientName}
-- Última interação foi: ${historyPrompt.split('\n').pop()}
+1. RESPOSTA DIRETA: Identifique o que o cliente disse por ÚLTIMO e responda DIRETAMENTE a isso. 
+2. ZERO REPETIÇÃO: Se o histórico mostrar que a "Empresa" já saudou ou já perguntou "como ajudar", NÃO REPITA. 
+3. FOCO NO VALOR: Se o cliente citar preço/valor, venda os benefícios e a tecnologia primeiro, depois convide para uma avaliação.
+4. AGENDAMENTO: Todo contato deve levar o cliente um passo mais perto do agendamento/venda.
+5. WHATSAPP STYLE: Máximo 2-3 linhas. Sem termos robóticos.
 
-REGRAS DE OURO DE RESPOSTA (ORDEM DE IMPORTÂNCIA):
-
-1. ATENÇÃO TOTAL À ÚLTIMA MENSAGEM:
-   - Sua resposta DEVE ser uma reação direta e imediata ao que foi dito por último.
-   - Ignore saudações iniciais se a conversa já estiver em andamento.
-
-2. PROIBIÇÃO DE REPETIÇÃO:
-   - Verifique o histórico. Se a "Empresa" já disse "Olá", "Que bom que você entrou em contato" ou já fez perguntas de boas-vindas, NÃO REPITA ISSO.
-   - Se o cliente já informou o que quer (ex: implantes, preço), não pergunte "como posso ajudar" ou "o que você busca".
-
-3. LÓGICA DE VENDAS POR CENÁRIO:
-   A) SE O CLIENTE FALOU DE PREÇO/VALOR:
-      - Foque 100% no VALOR do tratamento, tecnologia e nos benefícios.
-      - NUNCA dê preços fixos.
-      - Convide para uma avaliação clínica ou raio-X para um plano personalizado.
-
-   B) SE O CLIENTE SÓ DISSE "OLÁ":
-      - Seja acolhedor e faça uma pergunta de triagem (ex: "O que você busca melhorar no seu sorriso hoje?").
-
-   C) SE O CLIENTE JÁ ESTÁ CONVERSANDO:
-      - Seja objetivo. WhatsApp é rapidez. Máximo 2-3 linhas.
-
-TOM DE VOZ:
-- Humano, empático, profissional e objetivo.
-- Máximo 1 emoji.
-
-AGORA GERE A MELHOR RESPOSTA ESTRATÉGICA. Apenas o texto da resposta.
+CLIENTE ATUAL: ${clientName}
         `.trim();
+
+        // 1. Prepare Base Messages (System + Briefing)
+        const messages = [
+            { role: 'system', content: systemPrompt }
+        ];
+
+        // 2. Add Business Context as a system reminder if needed
+        if (extraContext) {
+            messages.push({ role: 'system', content: `Lembrete: Use estes dados se relevante: ${extraContext}` });
+        }
+
+        // 3. Add Conversation History (formatted by ChatArea)
+        if (Array.isArray(history)) {
+            messages.push(...history);
+        }
+
+        // 4. Final Directive
+        messages.push({
+            role: 'system',
+            content: 'Gere a melhor resposta estratégica agora. Seja humano, direto e ignore apresentações se já foram feitas.'
+        });
 
         try {
             const response = await fetch('/api/ai', {
@@ -66,12 +56,9 @@ AGORA GERE A MELHOR RESPOSTA ESTRATÉGICA. Apenas o texto da resposta.
                 },
                 body: JSON.stringify({
                     model: 'gpt-4o',
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: 'Gere a melhor resposta estratégica para a última mensagem do cliente.' }
-                    ],
-                    temperature: 0.85,
-                    max_tokens: 200
+                    messages: messages,
+                    temperature: 0.8,
+                    max_tokens: 300
                 })
             });
 

@@ -65,13 +65,12 @@ const ChatArea = ({ isArchived = false }) => {
         if (WandIcon) WandIcon.style.animation = 'spin 1s linear infinite';
 
         try {
-            // 1. EXTRACT BASIC CONTEXT
+            // 1. EXTRACT STRUCTURED CONTEXT (ChatML Format)
             const rawName = activeChat.name || "";
-            // Sanitize: If name is just numbers or JID-like, use "Cliente"
             const isNumeric = /^\d+$/.test(rawName.replace(/\D/g, ''));
             const clientName = (isNumeric || rawName.includes('@') || !rawName) ? "Cliente" : rawName;
 
-            const historyText = messages.slice(-15).map(m => {
+            const structuredHistory = messages.slice(-15).map(m => {
                 const isMe = m.key?.fromMe || m.fromMe;
                 const msg = m.message || {};
                 const text = msg.conversation ||
@@ -79,8 +78,11 @@ const ChatArea = ({ isArchived = false }) => {
                     m.content ||
                     m.text ||
                     "";
-                return `${isMe ? 'Empresa' : 'Cliente'}: ${text}`;
-            }).join('\n');
+                return {
+                    role: isMe ? 'assistant' : 'user',
+                    content: text
+                };
+            }).filter(m => m.content.trim() !== "");
 
             const lastClientMsg = [...messages].reverse().find(m => !(m.key?.fromMe || m.fromMe));
             const lastClientText = lastClientMsg?.message?.conversation ||
@@ -89,21 +91,19 @@ const ChatArea = ({ isArchived = false }) => {
                 lastClientMsg?.text ||
                 "";
 
-            setSuggestion(`Aura Orquestrador v8.5: Analisando intenção e buscando dados...`);
+            setSuggestion(`Aura Orquestrador v8.7: Sincronizando contexto completo v1.1.7...`);
 
-            // 2. RAG ORCHESTRATION (AURA v8.5)
+            // 2. RAG ORCHESTRATION
             const RAGService = (await import('../services/rag')).default;
             const extraContext = await RAGService.getRelevantContext(lastClientText);
-
-            console.log("AURA RAG: Contexto recuperado:", extraContext);
 
             // 3. GENERATE AI SUGGESTION
             const { default: OpenAIService } = await import('../services/openai');
             const aiRes = await OpenAIService.generateSuggestion({
                 clientName,
-                history: historyText,
-                briefing: briefing || "Negócio de Alta Performance",
-                extraContext
+                history: structuredHistory,
+                extraContext,
+                briefing: briefing || "Negócio de Alto Padrão"
             });
 
             if (aiRes) {
