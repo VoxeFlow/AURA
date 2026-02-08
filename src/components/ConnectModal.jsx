@@ -300,14 +300,32 @@ const ConnectModal = ({ isOpen, onClose }) => {
                         </div>
                     )}
 
-                    {/* DEBUG SECTION */}
-                    Last Response: ${debugInfo.lastResponse || 'None'}
-                    Socket: ${socket ? (socket.connected ? 'Connected' : 'Disconnected') : 'Null'}`}
-                </pre>
-            </details>
+                    {/* LOGS SECTION - REFINED */}
+                    <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px', textAlign: 'left' }}>
+                        <details style={{ cursor: 'pointer' }}>
+                            <summary style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>Painel Técnico de Depuração</summary>
+                            <div style={{
+                                marginTop: '15px',
+                                padding: '15px',
+                                background: 'rgba(0,0,0,0.3)',
+                                color: '#4ade80',
+                                fontSize: '11px',
+                                fontFamily: 'monospace',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255,255,255,0.03)',
+                                whiteSpace: 'pre-wrap',
+                                lineHeight: '1.5'
+                            }}>
+                                [System] {status.toUpperCase()}
+                                <br />[Socket] {socket?.connected ? 'ONLINE' : 'OFFLINE'}
+                                <br />[Instance] {instanceName}
+                                <br />[Last Response] {debugInfo.lastResponse || 'None'}
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
         </div>
-            </div >
-        </div >
     );
 };
 
