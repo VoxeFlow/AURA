@@ -1,7 +1,7 @@
 import { LayoutDashboard, History, Settings, LogOut, Link2, Brain, Kanban } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
-const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing }) => {
+const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing, onLogout }) => {
     const { activeChat, currentView, setCurrentView } = useStore();
     return (
         <aside className="sidebar glass-panel">
@@ -32,7 +32,16 @@ const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing }) => {
                 <div className="conn-status" style={{ fontSize: '10px', opacity: 0.5, marginBottom: '10px', textAlign: 'center', wordBreak: 'break-all', padding: '0 10px' }}>
                     {activeChat?.id ? 'ID: ' + activeChat.id : ''}
                 </div>
-                <LogOut size={20} className="logout-icon" />
+                <button
+                    onClick={onLogout}
+                    className="logout-button"
+                    title="Sair"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', width: '100%', color: 'var(--text-muted)', transition: 'color 0.2s' }}
+                    onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+                    onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
+                >
+                    <LogOut size={20} />
+                </button>
             </div>
         </aside>
     );

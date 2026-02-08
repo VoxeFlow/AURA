@@ -7,6 +7,7 @@ import ConnectModal from './components/ConnectModal';
 import BriefingModal from './components/BriefingModal';
 import HistoryView from './components/HistoryView';
 import CRMView from './components/CRMView'; // Added CRMView import
+import LoginScreen from './components/LoginScreen'; // AUTH: Login screen
 import { useStore } from './store/useStore';
 import WhatsAppService from './services/whatsapp';
 
@@ -16,14 +17,28 @@ const App = () => {
   const [isConnectOpen, setIsConnectOpen] = useState(false);
   const [isBriefingOpen, setIsBriefingOpen] = useState(false);
 
+  // AUTH: Check if user is authenticated
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // AUTH: Check localStorage for authentication token
   useEffect(() => {
-    // Check if briefing is empty and trigger onboarding
-    if (!briefing || briefing.trim() === '') {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  // Check if briefing is empty and trigger onboarding (only when authenticated)
+  useEffect(() => {
+    if (isAuthenticated && (!briefing || briefing.trim() === '')) {
       setTimeout(() => setIsBriefingOpen(true), 1500);
     }
-  }, [briefing]);
+  }, [briefing, isAuthenticated]);
 
+  // Check WhatsApp connection status (only when authenticated)
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     const checkConn = async () => {
       const status = await WhatsAppService.checkConnection();
       const open = status === 'open';
@@ -36,7 +51,18 @@ const App = () => {
     checkConn();
     const itv = setInterval(checkConn, 30000);
     return () => clearInterval(itv);
-  }, [setIsConnected, setChats]);
+  }, [setIsConnected, setChats, isAuthenticated]);
+
+  // AUTH: Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token');
+    setIsAuthenticated(false);
+  };
+
+  // AUTH: If not authenticated, show login screen (AFTER all hooks)
+  if (!isAuthenticated) {
+    return <LoginScreen onLogin={() => setIsAuthenticated(true)} />;
+  }
 
   return (
     <div className="app-container">
@@ -44,6 +70,7 @@ const App = () => {
         onOpenConfig={() => setIsConfigOpen(true)}
         onOpenConnect={() => setIsConnectOpen(true)}
         onOpenBriefing={() => setIsBriefingOpen(true)}
+        onLogout={handleLogout}
       />
       {currentView === 'history' ? <HistoryView /> : currentView === 'crm' ? null : <ChatList />}
       <main className="main-content">
