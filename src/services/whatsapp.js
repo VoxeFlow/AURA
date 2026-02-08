@@ -17,26 +17,67 @@ class WhatsAppService {
                 headers,
                 body: body ? JSON.stringify(body) : null
             });
-            if (!response.ok) return null;
+
+            if (!response.ok) {
+                // Return error object instead of null so we can handle 404s
+                const errorBody = await response.json().catch(() => ({}));
+                return { error: true, status: response.status, ...errorBody };
+            }
+
             return await response.json();
         } catch (e) {
             console.error("API Request Error:", e);
-            return null;
+            return { error: true, message: e.message };
         }
     }
 
     async checkConnection() {
         const { instanceName } = useStore.getState();
         if (!instanceName) return 'disconnected';
-        const data = await this.request(`/instance/connectionState/${instanceName}`);
-        return data?.instance?.state || 'disconnected';
+        try {
+            const data = await this.request(`/instance/connectionState/${instanceName}`);
+            if (data?.instance?.state) return data.instance.state;
+
+            // If 404 (instance not found), returns null from request()
+            // We should try to create it if it doesn't exist
+            return 'disconnected';
+        } catch (e) {
+            return 'disconnected';
+        }
+    }
+
+    async createInstance(name) {
+        if (!name) return null;
+        console.log(`AURA: Creating instance ${name}...`);
+        return await this.request('/instance/create', 'POST', {
+            instanceName: name,
+            token: name, // simple token
+            qrcode: true
+        });
     }
 
     async connectInstance() {
         const { instanceName } = useStore.getState();
         if (!instanceName) return null;
+
         // v2 standard: GET to connect instance
-        return await this.request(`/instance/connect/${instanceName}`);
+        // If 404, it means instance doesn't exist. We must CREATE it.
+        try {
+            const response = await this.request(`/instance/connect/${instanceName}`);
+
+            // Check for specific 404 or error in response payload if request() swallowed it
+            if (!response || (response.error && response.status === 404) || (response.response && response.response.message && response.response.message.includes('does not exist'))) {
+                console.warn(`AURA: Instance ${instanceName} not found. Creating...`);
+                await this.createInstance(instanceName);
+                // Try connecting again after creation
+                return await this.request(`/instance/connect/${instanceName}`);
+            }
+
+            return response;
+        } catch (e) {
+            console.error("Connect error:", e);
+            return null;
+        }
     }
 
     async logoutInstance() {
