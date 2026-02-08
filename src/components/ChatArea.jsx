@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Zap, Bot, Send, Check, BarChart3, Target, Wand2, Paperclip, Mic, Image, FileText, Camera, Tag, Archive, ChevronLeft } from 'lucide-react';
+import { Zap, Bot, Send, Check, BarChart3, Target, Wand2, Paperclip, Mic, Image, FileText, Camera, Tag, Archive, ChevronLeft, X } from 'lucide-react';
+// Note: Removed Box since I'll use standard div to avoid extra dependencies if not installed
 import { useStore } from '../store/useStore';
 import WhatsAppService from '../services/whatsapp';
 import { formatJid } from '../utils/formatter';
@@ -520,9 +521,9 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                     <button
                         className="mobile-analysis-btn"
                         onClick={() => setIsAnalysisOpen(true)}
-                        style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', display: 'none', cursor: 'pointer' }}
+                        style={{ background: 'none', border: 'none', color: 'var(--accent-primary)', display: 'none', cursor: 'pointer', padding: '5px' }}
                     >
-                        <Wand2 size={24} />
+                        <Wand2 size={22} />
                     </button>
                     {isArchived ? (
                         <button
@@ -622,6 +623,25 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                         {loading && messages.length === 0 && <p className="loading-txt">Carregando histórico...</p>}
                         <div ref={messagesEndRef} />
                     </div>
+
+                    {/* MOBILE SUGGESTION CARD (Visible only on mobile when suggestion exists) */}
+                    {suggestion && !suggestion.includes('...') && (
+                        <div className="mobile-suggestion-card glass-panel">
+                            <div className="suggestion-header">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <Bot size={16} color="var(--accent-primary)" />
+                                    <span>Sugestão Aura</span>
+                                </div>
+                                <button className="close-suggestion" onClick={() => setSuggestion('')}>
+                                    <X size={14} />
+                                </button>
+                            </div>
+                            <p className="suggestion-text">{suggestion}</p>
+                            <button className="use-suggestion-btn" onClick={useSuggestion}>
+                                Usar Sugestão
+                            </button>
+                        </div>
+                    )}
 
                     <form className="message-input-area" onSubmit={handleSend} style={{ position: 'relative' }}>
 
@@ -730,31 +750,49 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                             type="button"
                             className="btn-icon"
                             onClick={() => setShowAttachMenu(!showAttachMenu)}
-                            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0 10px' }}
+                            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0 5px' }}
                         >
-                            <Paperclip size={20} />
+                            <Paperclip size={22} />
                         </button>
 
-                        <button
-                            type="button"
-                            className={`btn-enhance ${input.trim() ? 'active' : ''}`}
-                            onClick={handleEnhance}
-                            disabled={!input.trim() || isEnhancing || sending}
-                            title="Aprimorar Resposta"
-                        >
-                            <Wand2 size={18} className={isEnhancing ? 'spin' : ''} />
-                        </button>
+                        <div className="input-container-main">
+                            <button
+                                type="button"
+                                className={`btn-enhance ${input.trim() ? 'active' : ''}`}
+                                onClick={handleEnhance}
+                                disabled={!input.trim() || isEnhancing || sending}
+                                title="Aprimorar Resposta"
+                            >
+                                <Wand2 size={18} className={isEnhancing ? 'spin' : ''} />
+                            </button>
 
-                        <input
-                            type="text"
-                            placeholder="Digite sua resposta persuasiva..."
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            disabled={sending || isEnhancing}
-                        />
+                            <input
+                                type="text"
+                                placeholder="Resposta persuasiva..."
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                disabled={sending || isEnhancing}
+                            />
+                        </div>
 
                         {input.trim() ? (
-                            <button type="submit" disabled={sending || isEnhancing}>
+                            <button
+                                type="submit"
+                                disabled={sending || isEnhancing}
+                                style={{
+                                    background: 'var(--accent-primary)',
+                                    color: '#000',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '48px',
+                                    height: '48px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                                    flexShrink: 0
+                                }}
+                            >
                                 <Send size={20} />
                             </button>
                         ) : (
@@ -762,17 +800,19 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                                 type="button"
                                 onClick={handleMicClick}
                                 style={{
-                                    background: recording ? '#ef4444' : 'none',
+                                    background: recording ? '#ef4444' : 'var(--accent-primary)',
                                     border: 'none',
-                                    color: recording ? '#fff' : 'var(--text-muted)',
+                                    color: recording ? '#fff' : '#000',
                                     cursor: 'pointer',
                                     borderRadius: '50%',
-                                    width: '35px',
-                                    height: '35px',
+                                    width: '48px',
+                                    height: '48px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    transition: 'all 0.2s'
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                                    transition: 'all 0.2s',
+                                    flexShrink: 0
                                 }}
                             >
                                 <Mic size={20} className={recording ? 'pulse' : ''} />

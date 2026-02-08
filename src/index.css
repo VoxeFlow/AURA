@@ -376,32 +376,33 @@ input:focus {
 }
 
 .message {
-  padding: 10px 16px;
-  border-radius: 12px;
-  max-width: 85%;
-  font-size: 13px;
-  line-height: 1.4;
+  padding: 12px 16px;
+  border-radius: 18px;
+  max-width: 80%;
+  font-size: 14.5px;
+  line-height: 1.45;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 .message.in {
   align-self: flex-start;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  color: var(--text-main);
-  border-top-left-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  color: #1c1c1e;
+  border-bottom-left-radius: 4px;
 }
 
 .message.out {
   align-self: flex-end;
   background: #f2f2f5;
-  /* CHANGED: Light Gray as requested */
+  /* Light gray for premium feel */
   color: #1d1d1f;
-  /* Dark text for contrast */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-top-right-radius: 2px;
-  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-bottom-right-radius: 4px;
+  font-weight: 400;
 }
 
 .analysis-column {
@@ -543,6 +544,108 @@ input:focus {
   justify-content: center;
   gap: 10px;
   box-shadow: 0 8px 20px rgba(197, 160, 89, 0.2);
+}
+
+.message-input-area {
+  padding: 10px 15px;
+  background: transparent;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
+.input-container-main {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-height: 48px;
+}
+
+.message-input-area input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  padding: 10px 12px !important;
+  font-size: 16px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Suggested Response Card - Mobile */
+.mobile-suggestion-card {
+  margin: 0 15px 8px;
+  padding: 15px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  animation: slideInUp 0.3s ease;
+}
+
+.suggestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.suggestion-text {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #48484a;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.use-suggestion-btn {
+  width: 100%;
+  padding: 10px;
+  background: rgba(197, 160, 89, 0.1);
+  color: var(--accent-primary);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.use-suggestion-btn:active {
+  background: rgba(197, 160, 89, 0.2);
+  transform: scale(0.98);
+}
+
+.close-suggestion {
+  background: none;
+  border: none;
+  color: #8e8e93;
+  cursor: pointer;
+  padding: 4px;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Utility for empty states */
@@ -731,28 +834,26 @@ input:focus {
 }
 
 .btn-enhance {
-  background: #fdf6e3;
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  color: #cbbba0;
-  width: 38px;
-  height: 38px;
+  background: rgba(197, 160, 89, 0.08);
+  border: none;
+  color: var(--accent-primary);
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
   border-radius: 50%;
-  margin-right: 5px;
 }
 
 .btn-enhance:hover {
-  background: #f9f2db;
-  transform: scale(1.05);
+  background: rgba(197, 160, 89, 0.15);
 }
 
 .btn-enhance.active {
-  background: var(--accent-secondary);
-  color: var(--accent-primary);
+  background: var(--accent-primary);
+  color: #000;
 }
 
 .chat-main-header {
