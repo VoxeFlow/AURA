@@ -121,6 +121,9 @@ const ConnectModal = ({ isOpen, onClose }) => {
         };
     }, [isOpen, instanceName, isConnected, apiUrl, loading, connecting]); // FIX: Added loading and connecting to dependencies
 
+    // Debug state
+    const [debugInfo, setDebugInfo] = useState({ error: null, lastResponse: null });
+
     // START POLLING for QR Code if WebSocket fails
     useEffect(() => {
         if (!isOpen || isConnected || !instanceName) return;
@@ -129,18 +132,23 @@ const ConnectModal = ({ isOpen, onClose }) => {
         const pollQrCode = async () => {
             if (qrCode) return; // Don't poll if we already have one
             try {
+                console.log('🔄 Polling: Checking for QR Code...');
                 // Fetch the connection status/QR code directly
                 const data = await WhatsAppService.connectInstance();
+                setDebugInfo(prev => ({ ...prev, lastResponse: JSON.stringify(data).slice(0, 100) + '...' }));
+
                 if (data && (data.qrcode || data.base64)) {
-                    console.log('🔄 Polling: QR Code received via HTTP');
+                    console.log('✅ Polling: QR Code received via HTTP');
                     const raw = data.qrcode?.base64 || data.base64 || data.qrcode;
                     if (raw && typeof raw === 'string') {
                         const base64Clean = raw.replace(/^data:image\/[a-z]+;base64,/, '');
                         setQrCode(`data:image/png;base64,${base64Clean}`);
+                        setStatus('open'); // Assume open if we got data (or at least responding)
                     }
                 }
             } catch (e) {
                 console.warn('Polling error:', e);
+                setDebugInfo(prev => ({ ...prev, error: e.message }));
             }
         };
 
@@ -160,6 +168,8 @@ const ConnectModal = ({ isOpen, onClose }) => {
     const handleConnect = async () => {
         setLoading(true);
         setQrCode(null);
+        setDebugInfo({ error: null, lastResponse: 'Restarting...' });
+
         // FIX: Force WebSocket useEffect to re-run by incrementing counter
         setConnecting(prev => prev + 1);
         try {
@@ -175,6 +185,7 @@ const ConnectModal = ({ isOpen, onClose }) => {
             console.log('Instance restart triggered, waiting for QR code...');
         } catch (e) {
             console.error("Connect Error:", e);
+            setDebugInfo(prev => ({ ...prev, error: e.message || 'Connect Failed' }));
         }
         setLoading(false);
     };
@@ -244,6 +255,19 @@ const ConnectModal = ({ isOpen, onClose }) => {
                             )}
                         </div>
                     )}
+
+                    {/* DEBUG SECTION */}
+                    <details style={{ marginTop: '20px', textAlign: 'left', fontSize: '10px', opacity: 0.7, borderTop: '1px solid #ccc', paddingTop: '10px' }}>
+                        <summary>Debug Info (Clique para expandir)</summary>
+                        <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+                            {`API URL: ${apiUrl}
+Instance: ${instanceName}
+Status: ${status}
+Polling Error: ${debugInfo.error || 'None'}
+Last Response: ${debugInfo.lastResponse || 'None'}
+Socket: ${socket ? (socket.connected ? 'Connected' : 'Disconnected') : 'Null'}`}
+                        </pre>
+                    </details>
                 </div>
             </div>
         </div>
