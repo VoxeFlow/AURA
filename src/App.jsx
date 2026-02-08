@@ -55,11 +55,18 @@ const App = () => {
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
-  // Handle external modal triggers (from ConfigModal)
+  // Handle external modal triggers (from Hub/Settings)
   useEffect(() => {
     const handleOpenBriefing = () => setIsBriefingOpen(true);
+    const handleOpenConnect = () => setIsConnectOpen(true);
+
     window.addEventListener('open-briefing', handleOpenBriefing);
-    return () => window.removeEventListener('open-briefing', handleOpenBriefing);
+    window.addEventListener('open-connect', handleOpenConnect);
+
+    return () => {
+      window.removeEventListener('open-briefing', handleOpenBriefing);
+      window.removeEventListener('open-connect', handleOpenConnect);
+    };
   }, []);
 
 

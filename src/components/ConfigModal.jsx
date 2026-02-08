@@ -57,78 +57,107 @@ const ConfigModal = ({ isOpen, onClose }) => {
                     <X size={24} onClick={onClose} style={{ cursor: 'pointer', opacity: 0.5 }} />
                 </div>
 
-                <form onSubmit={handleSave} style={{ padding: '20px' }}>
+                <form onSubmit={handleSave} style={{ padding: '0 25px 25px' }}>
+
+                    {/* HUB NAVIGATION - PRIMARY ACTIONS */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '15px',
+                        marginBottom: '30px',
+                        padding: '20px',
+                        background: 'rgba(255,255,255,0.03)',
+                        borderRadius: '16px',
+                        border: '1px solid var(--glass-border)'
+                    }}>
+                        <button
+                            type="button"
+                            onClick={() => { onClose(); window.dispatchEvent(new CustomEvent('open-connect')); }}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '10px',
+                                padding: '20px',
+                                background: 'rgba(0,0,0,0.3)',
+                                border: '1px solid var(--glass-border)',
+                                borderRadius: '12px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+                            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--glass-border)'}
+                        >
+                            <Link2 color="var(--accent-primary)" size={24} />
+                            <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>Conectar WhatsApp</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => { onClose(); window.dispatchEvent(new CustomEvent('open-briefing')); }}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '10px',
+                                padding: '20px',
+                                background: 'rgba(0,0,0,0.3)',
+                                border: '1px solid var(--glass-border)',
+                                borderRadius: '12px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+                            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--glass-border)'}
+                        >
+                            <Brain color="var(--accent-primary)" size={24} />
+                            <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>Gerir Inteligência</span>
+                        </button>
+                    </div>
+
                     <div className="input-field-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                         <div className="input-group">
-                            <label>API URL</label>
-                            <input name="apiUrl" value={formData.apiUrl} onChange={handleChange} required />
+                            <label style={{ fontSize: '11px', opacity: 0.6 }}>API URL</label>
+                            <input name="apiUrl" value={formData.apiUrl} onChange={handleChange} required style={{ height: '35px', fontSize: '12px' }} />
                         </div>
                         <div className="input-group">
-                            <label>Instância</label>
-                            <input name="instanceName" value={formData.instanceName} onChange={handleChange} required />
+                            <label style={{ fontSize: '11px', opacity: 0.6 }}>Instância</label>
+                            <input name="instanceName" value={formData.instanceName} onChange={handleChange} required style={{ height: '35px', fontSize: '12px' }} />
                         </div>
                         <div className="input-group" style={{ gridColumn: 'span 2' }}>
-                            <label>Master API Key</label>
-                            <input type="password" name="apiKey" value={formData.apiKey} onChange={handleChange} required style={{ letterSpacing: '2px' }} />
+                            <label style={{ fontSize: '11px', opacity: 0.6 }}>Master API Key</label>
+                            <input type="password" name="apiKey" value={formData.apiKey} onChange={handleChange} required style={{ height: '35px', fontSize: '12px', letterSpacing: '2px' }} />
                         </div>
                     </div>
 
                     <div className="input-group" style={{ marginTop: '25px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <Brain size={16} color="var(--accent-primary)" />
-                                <label style={{ margin: 0, fontWeight: 'bold' }}>Briefing do Negócio</label>
-                            </div>
-                            <button
-                                type="button"
-                                className="btn-primary"
-                                onClick={() => {
-                                    onClose();
-                                    window.dispatchEvent(new CustomEvent('open-briefing'));
-                                }}
-                                style={{ padding: '5px 15px', fontSize: '11px', borderRadius: '8px', background: 'rgba(197, 160, 89, 0.1)', color: 'var(--accent-primary)', border: '1px solid var(--accent-primary)' }}
-                            >
-                                <Sparkles size={12} style={{ marginRight: '5px' }} /> Abrir Dashboard Estratégico
-                            </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                            <label style={{ margin: 0, fontWeight: 'bold', fontSize: '12px', color: 'rgba(255,255,255,0.7)' }}>Edição Direta do Briefing (Backup)</label>
                         </div>
 
-                        <div style={{ position: 'relative' }}>
-                            <textarea
-                                name="briefing"
-                                value={formData.briefing}
-                                onChange={handleChange}
-                                rows={8}
-                                placeholder="Descreva seu negócio, produtos, serviços e diferenciais..."
-                                style={{
-                                    width: '100%',
-                                    background: 'rgba(0,0,0,0.3)',
-                                    border: '1px solid var(--glass-border)',
-                                    color: 'rgba(255,255,255,0.9)',
-                                    padding: '15px',
-                                    borderRadius: '12px',
-                                    resize: 'vertical',
-                                    fontSize: '13px',
-                                    lineHeight: '1.6',
-                                    outline: 'none',
-                                    transition: 'border-color 0.3s'
-                                }}
-                            />
-                            {!formData.briefing && (
-                                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', pointerEvents: 'none', opacity: 0.3 }}>
-                                    <AlertTriangle size={32} style={{ marginBottom: '10px' }} />
-                                    <p style={{ fontSize: '12px' }}>A IA precisa de um briefing para atuar.</p>
-                                </div>
-                            )}
-                        </div>
-                        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', marginTop: '8px' }}>
-                            Dica: Use o Dashboard Estratégico para uma análise profunda feita pela IA Aura.
-                        </p>
+                        <textarea
+                            name="briefing"
+                            value={formData.briefing}
+                            onChange={handleChange}
+                            rows={4}
+                            placeholder="Descreva seu negócio para a IA..."
+                            style={{
+                                width: '100%',
+                                background: 'rgba(0,0,0,0.2)',
+                                border: '1px solid var(--glass-border)',
+                                color: 'rgba(255,255,255,0.6)',
+                                padding: '12px',
+                                borderRadius: '10px',
+                                resize: 'vertical',
+                                fontSize: '11px',
+                                lineHeight: '1.5'
+                            }}
+                        />
                     </div>
 
-                    <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-end', gap: '15px' }}>
-                        <button type="button" onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}>Cancelar</button>
-                        <button type="submit" className="btn-primary" style={{ padding: '12px 30px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <Save size={18} /> Salvar Configurações
+                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+                        <button type="submit" className="btn-primary" style={{ padding: '12px 60px', borderRadius: '12px', fontSize: '13px' }}>
+                            <Save size={18} /> Salvar Tudo
                         </button>
                     </div>
                 </form>
@@ -136,5 +165,5 @@ const ConfigModal = ({ isOpen, onClose }) => {
         </div>
     );
 };
-import { Settings, Sparkles } from 'lucide-react';
+import { Settings, Sparkles, Link2 } from 'lucide-react';
 export default ConfigModal;

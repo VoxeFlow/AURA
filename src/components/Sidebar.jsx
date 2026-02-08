@@ -11,20 +11,16 @@ const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing, onLogout }) => {
 
             <nav id="mainNav">
                 <ul>
-                    <li className={currentView === 'dashboard' ? 'active' : ''} onClick={() => setCurrentView('dashboard')}>
+                    <li className={currentView === 'dashboard' ? 'active' : ''} onClick={() => setCurrentView('dashboard')} title="Dashboard">
                         <LayoutDashboard size={24} />
                     </li>
                     <li className={currentView === 'crm' ? 'active' : ''} onClick={() => setCurrentView('crm')} title="CRM Pipeline">
                         <Kanban size={24} />
                     </li>
-                    <li className={currentView === 'history' ? 'active' : ''} onClick={() => setCurrentView('history')}>
+                    <li className={currentView === 'history' ? 'active' : ''} onClick={() => setCurrentView('history')} title="Histórico">
                         <History size={24} />
                     </li>
-                    <li title="Configuração Estratégica AI" onClick={onOpenBriefing} style={{ color: 'var(--accent-primary)' }}>
-                        <Brain size={24} />
-                    </li>
-                    <li title="Conectar WhatsApp" onClick={onOpenConnect}><Link2 size={24} /></li>
-                    <li title="Configurações API" onClick={onOpenConfig}><Settings size={24} /></li>
+                    <li title="Configurações Aura" onClick={onOpenConfig}><Settings size={24} /></li>
                 </ul>
             </nav>
 
