@@ -1,4 +1,3 @@
-```javascript
 import React, { useState, useEffect } from 'react';
 import { X, ArrowRight, Save, Sparkles, Brain, Edit2, Check, RefreshCw, Plus } from 'lucide-react';
 import { useStore } from '../store/useStore';
@@ -14,12 +13,12 @@ const BriefingModal = ({ isOpen, onClose }) => {
 
     // Initialize view based on data presence
     useEffect(() => {
-        if (isOpen && knowledgeBase.length === 0) {
+        if (isOpen && (knowledgeBase?.length === 0 || !knowledgeBase)) {
             setView('interview');
         } else {
             setView('dashboard');
         }
-    }, [isOpen]);
+    }, [isOpen, knowledgeBase]);
 
     if (!isOpen) return null;
 
@@ -29,10 +28,10 @@ const BriefingModal = ({ isOpen, onClose }) => {
         setStatus('thinking');
         try {
             const { default: OpenAIService } = await import('../services/openai');
-            
+
             // 1. Generate strategic analysis for this point
             const analysis = await OpenAIService.analyzeKnowledgePoint(currentQuestion, currentAnswer);
-            
+
             const newItem = {
                 id: Date.now(),
                 q: currentQuestion,
@@ -40,7 +39,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
                 analysis
             };
 
-            const newKB = [...knowledgeBase, newItem];
+            const newKB = [...(knowledgeBase || []), newItem];
             setKnowledgeBase(newKB);
             setCurrentAnswer("");
 
@@ -62,7 +61,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
     };
 
     const syncBriefingText = (kb) => {
-        const text = kb.map(h => `[P]: ${ h.q } \n[R]: ${ h.a } `).join('\n\n');
+        const text = kb.map(h => `[P]: ${h.q}\n[R]: ${h.a}`).join('\n\n');
         setConfig({ briefing: text });
     };
 
@@ -74,11 +73,11 @@ const BriefingModal = ({ isOpen, onClose }) => {
         try {
             const { default: OpenAIService } = await import('../services/openai');
             const analysis = await OpenAIService.analyzeKnowledgePoint(point.q, tempAnswer);
-            
-            const newKB = knowledgeBase.map(item => 
+
+            const newKB = knowledgeBase.map(item =>
                 item.id === id ? { ...item, a: tempAnswer, analysis } : item
             );
-            
+
             setKnowledgeBase(newKB);
             syncBriefingText(newKB);
             setEditingId(null);
@@ -91,7 +90,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
     return (
         <div className="modal-overlay" onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', zIndex: 1000 }}>
             <div className="modal-content glass-panel" style={{ width: '95%', maxWidth: '800px', padding: '0', maxHeight: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }} onClick={e => e.stopPropagation()}>
-                
+
                 {/* Header */}
                 <div className="briefing-header" style={{
                     padding: '25px 35px',
@@ -112,7 +111,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
                     </div>
                     <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                         {view === 'dashboard' && (
-                            <button 
+                            <button
                                 onClick={() => setView('interview')}
                                 style={{ background: 'rgba(197, 160, 89, 0.1)', color: 'var(--accent-primary)', border: '1px solid var(--accent-primary)', padding: '8px 15px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}
                             >
@@ -125,7 +124,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
 
                 {/* Content Area */}
                 <div className="briefing-body" style={{ padding: '35px', overflowY: 'auto', flex: 1, background: 'rgba(255,255,255,0.02)' }}>
-                    
+
                     {view === 'interview' ? (
                         <div className="interview-flow">
                             <div className="question-area" style={{ minHeight: '200px' }}>
@@ -160,7 +159,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '30px', gap: '15px' }}>
-                                {knowledgeBase.length > 0 && (
+                                {knowledgeBase?.length > 0 && (
                                     <button className="btn-secondary" onClick={() => setView('dashboard')} style={{ padding: '12px 25px' }}>Ir para o Dashboard</button>
                                 )}
                                 <button
@@ -176,7 +175,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
                     ) : (
                         <div className="knowledge-dashboard">
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px' }}>
-                                {knowledgeBase.map((point) => (
+                                {knowledgeBase?.map((point) => (
                                     <div key={point.id} className="knowledge-card glass-panel" style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--glass-border)', borderRadius: '15px', position: 'relative', transition: 'transform 0.2s' }}>
                                         <div style={{ marginBottom: '15px' }}>
                                             <label style={{ fontSize: '10px', color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>Questão Estratégica</label>
@@ -198,9 +197,9 @@ const BriefingModal = ({ isOpen, onClose }) => {
                                                     }} />
                                                 )}
                                             </div>
-                                            
+
                                             {editingId === point.id ? (
-                                                <textarea 
+                                                <textarea
                                                     autoFocus
                                                     value={tempAnswer}
                                                     onChange={e => setTempAnswer(e.target.value)}
@@ -223,7 +222,7 @@ const BriefingModal = ({ isOpen, onClose }) => {
                                     </div>
                                 ))}
                             </div>
-                            
+
                             <div style={{ marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
                                 <button onClick={onClose} className="btn-primary" style={{ padding: '15px 60px', borderRadius: '12px', fontSize: '14px', background: 'linear-gradient(to right, #c5a059, #8a6d3a)', color: 'white' }}>
                                     Salvar e Aplicar Conhecimento
