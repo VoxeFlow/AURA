@@ -57,8 +57,8 @@ export const useStore = create(
                 {
                     id: 1707410008,
                     q: "Quais são as principais preocupações ou dúvidas que seus pacientes costumam ter antes de iniciar um tratamento na Impar Odonto?",
-                    a: "A maioria quer saber sobre preço",
-                    analysis: "Objeção clássica. A estratégia da IA será vender o VALOR (estrutura, garantia, especialistas, 24x sem juros) antes de falar de custos, convidando sempre para a avaliação presencial."
+                    a: "A maioria quer saber sobre preço. (ESTRATÉGIA: Podemos passar médias. Ex: Protocolos a partir de R$ 300,00 a R$ 600,00 na manutenção, ou valores de referência se perguntarem. O importante é não perder o lead por falta de informação, mas sempre tentar agendar).",
+                    analysis: "Flexibilidade Tática. A IA usará 'Preço de Referência' (ex: 'a partir de') para qualificar o lead sem assustar. Se o valor for ok para o cliente, o agendamento é quase certo."
                 },
                 {
                     id: 1707410009,
