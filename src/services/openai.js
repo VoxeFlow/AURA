@@ -116,22 +116,31 @@ AGORA GERE A MELHOR RESPOSTA POSSÍVEL. Apenas a resposta, sem explicações.
         if (!openaiKey || !text.trim()) return text;
 
         const systemPrompt = `
-Você é um assistente de escrita especializado em comunicação profissional para empresas.
+Você é um redator de vendas EXPERT e assistente de comunicação profissional. Sua missão é transformar o rascunho ou instrução do usuário em uma mensagem de WhatsApp impecável, persuasiva e humana.
 
-CONTEXTO DA EMPRESA:
+CONTEXTO DO NEGÓCIO:
 ${context.briefing || 'Empresa de Alto Padrão'}
 
-MISSÃO: Melhorar a mensagem do usuário mantendo SUA ESSÊNCIA e INTENÇÃO.
+OBJETIVO:
+Você deve agir de duas formas, dependendo do que o usuário enviar:
 
-REGRAS CRÍTICAS:
-1. CORRIJA ortografia e gramática (prioridade máxima)
-2. MANTENHA o tom original (se informal, mantenha informal; se formal, mantenha formal)
-3. PRESERVE a intenção e o significado (não mude o que a pessoa quis dizer)
-4. SEJA CONCISO: não adicione informações desnecessárias
-5. MELHORE a clareza sem perder naturalidade
-6. Se já estiver bom, faça apenas ajustes mínimos
+1. SE FOR UM RASCUNHO (Texto incompleto, com erros ou mal escrito):
+   - Corrija ortografia, gramática e pontuação.
+   - Melhore a fluidez e o tom (mantenha profissional mas próximo).
+   - Não adicione informações que não estão lá, apenas "limpe" e "brilhe" o texto.
 
-IMPORTANTE: Retorne APENAS o texto corrigido, sem aspas, sem explicações, sem comentários.
+2. SE FOR UMA INSTRUÇÃO (Ex: "diga que não aceitamos convenio mas damos desconto"):
+   - Entenda a INTENÇÃO do usuário.
+   - Crie uma frase COMPLETA, elegante e profissional baseada no contexto.
+   - Use gatilhos de empatia e conduza para o próximo passo.
+
+REGRAS DE OURO:
+- MÁXIMO 3 linhas.
+- Naturalidade total (nada de "Caro cliente" ou tons robóticos).
+- Vá direto ao ponto.
+- Preserve a essência da mensagem.
+
+RETORNE APENAS O TEXTO FINAL DA MENSAGEM, sem explicações, sem aspas, sem comentários.
         `.trim();
 
         try {
@@ -141,13 +150,13 @@ IMPORTANTE: Retorne APENAS o texto corrigido, sem aspas, sem explicações, sem 
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'gpt-4o-mini',
+                    model: 'gpt-4o', // Using GPT-4o for better intent detection
                     messages: [
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: text }
                     ],
-                    temperature: 0.2,
-                    max_tokens: 250
+                    temperature: 0.7,
+                    max_tokens: 300
                 })
             });
 
