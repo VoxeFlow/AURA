@@ -385,12 +385,12 @@ input:focus {
 
 .message.out {
   align-self: flex-end;
-  background: var(--aura-gold);
-  /* RESTORED: Aura Gold bubbles */
-  color: white;
-  /* RESTORED: White text on gold */
-  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
-  border: none;
+  background: #f2f2f5;
+  /* CHANGED: Light Gray as requested */
+  color: #1d1d1f;
+  /* Dark text for contrast */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-top-right-radius: 2px;
   font-weight: 500;
 }
