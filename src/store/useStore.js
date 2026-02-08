@@ -129,6 +129,17 @@ export const useStore = create(
             setIsConnected: (isConnected) => set({ isConnected }),
             setCurrentView: (view) => set({ currentView: view }),
 
+            // FINAL GHOST FIX: Centralized view switching with guaranteed cleanup
+            switchView: (viewName) => {
+                console.log(`AURA: Switching view to ${viewName}, clearing active state`);
+                set({
+                    currentView: viewName,
+                    activeChat: null,
+                    messages: [],
+                    lastFetchedJid: null
+                });
+            },
+
             // ACTION: Logout and Clear State
             logout: () => {
                 console.log('AURA: Logging out and clearing data...');

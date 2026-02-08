@@ -54,6 +54,7 @@ const ChatArea = ({ isArchived = false, onBack }) => {
     useEffect(() => {
         // Strictly only scroll to bottom on initial chat load
         if (isFirstLoadRef.current && messages.length > 0) {
+            console.log("AURA: Performing initial scroll to bottom");
             scrollToBottom("auto");
             isFirstLoadRef.current = false;
         }

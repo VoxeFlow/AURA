@@ -108,14 +108,9 @@ const App = () => {
     return <LoginScreen onLogin={() => setIsAuthenticated(true)} />;
   }
 
-  // State Synchronization: Clear active chat when switching views to prevent "ghosts"
-  useEffect(() => {
-    setActiveChat(null);
-  }, [currentView, setActiveChat]);
-
   // MAIN APP: User is authenticated
   return (
-    <div className="app-container">
+    <div className={`app-container ${currentView === 'crm' ? 'crm-mode' : ''}`}>
       <Sidebar
         onOpenConfig={() => setIsConfigOpen(true)}
         onOpenConnect={() => setIsConnectOpen(true)}
