@@ -15,10 +15,9 @@ if (fs.existsSync(envPath)) {
 const API_URL = env.VITE_API_URL || 'https://api.voxeflow.com';
 const API_KEY = env.VITE_API_KEY || 'Beatriz@CB650';
 const INSTANCE = env.VITE_INSTANCE_NAME || 'VoxeFlow';
-// The LID found in previous step
-const TARGET_LID = '97401268338833@lid';
+const SEARCH_FRAGMENT = '97401268338833';
 
-console.log(`🔍 Debugging MESSAGES for LID: ${TARGET_LID}`);
+console.log(`🔍 Debugging CONTACTS for Instance: ${INSTANCE}`);
 console.log(`🌐 URL: ${API_URL}`);
 
 async function request(endpoint, method = 'GET', body = null) {
@@ -38,12 +37,8 @@ async function request(endpoint, method = 'GET', body = null) {
             body: body ? JSON.stringify(body) : null
         });
 
-        if (!res.ok) {
-            console.error(`❌ HTTP Error ${res.status}: ${res.statusText}`);
-            return null;
-        }
-
-        return await res.json();
+        const json = await res.json();
+        return json;
     } catch (e) {
         console.error(`❌ Request Error ${endpoint}:`, e.message);
         return null;
@@ -51,29 +46,23 @@ async function request(endpoint, method = 'GET', body = null) {
 }
 
 async function run() {
-    console.log('📦 Fetching messages...');
-    const data = await request(`chat/findMessages/${INSTANCE}`, 'POST', {
-        where: {
-            key: {
-                remoteJid: TARGET_LID
-            }
-        },
-        limit: 10
+    console.log('📦 Fetching contacts...');
+    const data = await request(`chat/findContacts/${INSTANCE}`, 'GET');
+
+    const contacts = Array.isArray(data) ? data : (data?.records || []);
+    console.log(`✅ Found ${contacts.length} contacts.`);
+
+    let found = false;
+    contacts.forEach(c => {
+        const json = JSON.stringify(c);
+        if (json.includes('974') || json.includes('rosangela')) {
+            console.log('🎯 MATCH FOUND in Contact:', json);
+            found = true;
+        }
     });
 
-    const messages = Array.isArray(data) ? data : (data?.messages?.records || data?.records || data?.messages || []);
-    console.log(`✅ Found ${messages.length} messages.`);
-
-    messages.forEach((m, i) => {
-        const participant = m.key?.participant || m.participant;
-        console.log(`[${i}] ID: ${m.key?.id} | FromMe: ${m.key?.fromMe}`);
-        console.log(`    RemoteJid: ${m.key?.remoteJid}`);
-        if (participant) console.log(`   -> Found Participant: ${participant}`);
-    });
-
-    if (messages.length === 0) {
-        console.log('⚠️ No messages found. Trying fallback scan...');
-        // Try searching for messages where 'remoteJid' is the JID but maybe without @lid? (unlikely)
+    if (!found) {
+        console.log('❌ No contact found matching fragment or name "rosangela".');
     }
 }
 

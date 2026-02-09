@@ -547,6 +547,31 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                             }
                             return null;
                         })()}
+
+                        <button
+                            onClick={() => {
+                                const current = whatsappService.extractPhoneNumber(activeChat.id, activeChat);
+                                const newPhone = window.prompt("✏️ CORREÇÃO MANUAL\n\nEste contato está sem número (apenas ID). Para conseguir responder, digite o número correto do WhatsApp (com DDD, apenas números):\n\nEx: 5531999998888", current || "");
+                                if (newPhone && /^\d{10,15}$/.test(newPhone)) {
+                                    whatsappService.setManualPhoneMapping(activeChat.id, newPhone);
+                                    alert(`✅ Número ${newPhone} salvo para este contato!\nTente enviar a mensagem novamente.`);
+                                } else if (newPhone) {
+                                    alert("❌ Número inválido. Digite entre 10 e 15 números (ex: 55319...)");
+                                }
+                            }}
+                            className="icon-btn"
+                            title="Corrigir Número"
+                            style={{
+                                marginLeft: '8px',
+                                padding: '4px',
+                                background: 'rgba(255,100,100,0.1)',
+                                color: 'var(--accent-primary)',
+                                borderRadius: '50%',
+                                border: '1px solid rgba(255,100,100,0.3)'
+                            }}
+                        >
+                            <Pencil size={14} />
+                        </button>
                     </div>
                 </div>
                 <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
