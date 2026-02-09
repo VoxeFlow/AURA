@@ -399,6 +399,28 @@ class WhatsAppService {
         }
     }
 
+    setManualNameMapping(jid, name) {
+        try {
+            const mappings = JSON.parse(localStorage.getItem('contactNameMap') || '{}');
+            mappings[jid] = name;
+            localStorage.setItem('contactNameMap', JSON.stringify(mappings));
+            console.log(`✅ Saved name mapping: ${jid} → ${name}`);
+            return true;
+        } catch (e) {
+            console.error('Error saving name mapping:', e);
+            return false;
+        }
+    }
+
+    getManualNameMapping(jid) {
+        try {
+            const mappings = JSON.parse(localStorage.getItem('contactNameMap') || '{}');
+            return mappings[jid] || null;
+        } catch (e) {
+            return null;
+        }
+    }
+
     extractPhoneNumber(jid, chatData = null) {
         if (!jid) return null;
 

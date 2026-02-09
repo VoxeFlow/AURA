@@ -550,17 +550,43 @@ const ChatArea = ({ isArchived = false, onBack }) => {
 
                         <button
                             onClick={() => {
-                                const current = WhatsAppService.extractPhoneNumber(activeChat.id, activeChat);
-                                const newPhone = window.prompt("✏️ CORREÇÃO MANUAL\n\nEste contato está sem número (apenas ID). Para conseguir responder, digite o número correto do WhatsApp (com DDD, apenas números):\n\nEx: 5531999998888", current || "");
-                                if (newPhone && /^\d{10,15}$/.test(newPhone)) {
+                                const currentName = activeChat.name || activeChat.pushName || "";
+                                const currentPhone = WhatsAppService.extractPhoneNumber(activeChat.id, activeChat);
+                                
+                                // Prompt for name first
+                                const newName = window.prompt("✏️ EDITAR CONTATO\n\n1️⃣ Nome do contato:", currentName);
+                                if (newName === null) return; // User cancelled
+                                
+                                // Prompt for phone number
+                                const newPhone = window.prompt("2️⃣ Número do WhatsApp (com DDD, apenas números):\n\nEx: 5531999998888", currentPhone || "");
+                                if (newPhone === null) return; // User cancelled
+                                
+                                // Validate phone
+                                if (newPhone && !/^\d{10,15}$/.test(newPhone)) {
+                                    alert("❌ Número inválido. Digite entre 10 e 15 números.");
+                                    return;
+                                }
+                                
+                                // Save name if provided
+                                if (newName && newName.trim()) {
+                                    WhatsAppService.setManualNameMapping(activeChat.id, newName.trim());
+                                }
+                                
+                                // Save phone if provided
+                                if (newPhone) {
                                     WhatsAppService.setManualPhoneMapping(activeChat.id, newPhone);
-                                    alert(`✅ Número ${newPhone} salvo para este contato!\nTente enviar a mensagem novamente.`);
-                                } else if (newPhone) {
-                                    alert("❌ Número inválido. Digite entre 10 e 15 números (ex: 55319...)");
+                                }
+                                
+                                const savedInfo = [];
+                                if (newName && newName.trim()) savedInfo.push(`Nome: ${newName.trim()}`);
+                                if (newPhone) savedInfo.push(`Número: ${newPhone}`);
+                                
+                                if (savedInfo.length > 0) {
+                                    alert(`✅ Contato atualizado!\n${savedInfo.join('\n')}\n\nTente enviar a mensagem novamente.`);
                                 }
                             }}
                             className="icon-btn"
-                            title="Corrigir Número"
+                            title="Editar Contato"
                             style={{
                                 marginLeft: '8px',
                                 padding: '4px',
