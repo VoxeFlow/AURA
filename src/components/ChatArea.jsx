@@ -550,10 +550,10 @@ const ChatArea = ({ isArchived = false, onBack }) => {
 
                         <button
                             onClick={() => {
-                                const current = whatsappService.extractPhoneNumber(activeChat.id, activeChat);
+                                const current = WhatsAppService.extractPhoneNumber(activeChat.id, activeChat);
                                 const newPhone = window.prompt("✏️ CORREÇÃO MANUAL\n\nEste contato está sem número (apenas ID). Para conseguir responder, digite o número correto do WhatsApp (com DDD, apenas números):\n\nEx: 5531999998888", current || "");
                                 if (newPhone && /^\d{10,15}$/.test(newPhone)) {
-                                    whatsappService.setManualPhoneMapping(activeChat.id, newPhone);
+                                    WhatsAppService.setManualPhoneMapping(activeChat.id, newPhone);
                                     alert(`✅ Número ${newPhone} salvo para este contato!\nTente enviar a mensagem novamente.`);
                                 } else if (newPhone) {
                                     alert("❌ Número inválido. Digite entre 10 e 15 números (ex: 55319...)");
