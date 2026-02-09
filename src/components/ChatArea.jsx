@@ -237,7 +237,8 @@ const ChatArea = ({ isArchived = false, onBack }) => {
 
         setSending(true);
         try {
-            const res = await WhatsAppService.sendMessage(jid, input);
+            // Pass activeChat to enable phone number extraction from metadata
+            const res = await WhatsAppService.sendMessage(jid, input, activeChat);
 
             // Check if message was sent successfully
             if (res && !res.error) {

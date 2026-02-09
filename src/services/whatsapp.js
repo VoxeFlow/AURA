@@ -306,7 +306,7 @@ class WhatsAppService {
         }
     }
 
-    extractPhoneNumber(jid) {
+    extractPhoneNumber(jid, chatData = null) {
         if (!jid) return null;
 
         // Priority 1: Regular phone number JID (e.g., "5531992957555@s.whatsapp.net")
@@ -318,13 +318,51 @@ class WhatsAppService {
             }
         }
 
-        // Priority 2: Manual mapping from localStorage
+        // Priority 2: Extract from chat metadata (for @lid contacts)
+        if (chatData) {
+            // Check participant field (often contains the real phone number)
+            const participant = chatData.lastMessage?.key?.participant ||
+                chatData.lastMessage?.participant ||
+                chatData.participant;
+
+            if (participant && participant.includes('@s.whatsapp.net')) {
+                const phone = participant.split('@')[0];
+                if (/^\d{10,15}$/.test(phone)) {
+                    console.log(`✅ Extracted phone from participant: ${phone}`);
+                    return phone;
+                }
+            }
+
+            // Check remoteJid variations
+            const remoteJid = chatData.lastMessage?.key?.remoteJid || chatData.remoteJid;
+            if (remoteJid && remoteJid.includes('@s.whatsapp.net') && !remoteJid.includes('@lid')) {
+                const phone = remoteJid.split('@')[0];
+                if (/^\d{10,15}$/.test(phone)) {
+                    console.log(`✅ Extracted phone from remoteJid: ${phone}`);
+                    return phone;
+                }
+            }
+
+            // Diagnostic logging for @lid contacts
+            if (jid.includes('@lid')) {
+                console.log('🔍 @lid contact metadata:', {
+                    jid,
+                    participant: chatData.lastMessage?.key?.participant,
+                    remoteJid: chatData.lastMessage?.key?.remoteJid,
+                    availableFields: Object.keys(chatData)
+                });
+            }
+        }
+
+        // Priority 3: Manual mapping from localStorage
         const manualPhone = this.getManualPhoneMapping(jid);
         if (manualPhone) {
+            console.log(`✅ Using manual mapping: ${manualPhone}`);
             return manualPhone;
         }
 
-        // Priority 3: No phone number available
+        // Priority 4: No phone number found
+        console.warn(`⚠️ Could not extract phone number for: ${jid}`);
         return null;
     }
 
