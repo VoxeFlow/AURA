@@ -554,40 +554,30 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                                 const currentName = WhatsAppService.getManualNameMapping(activeChat.id) || activeChat.name || activeChat.pushName || "";
                                 const currentPhone = WhatsAppService.extractPhoneNumber(activeChat.id, activeChat) || "";
 
-                                // Single prompt with format: "Nome | Número"
-                                const input = window.prompt(
-                                    "✏️ EDITAR CONTATO\n\nFormato: Nome | Número\n(deixe em branco o que não quiser alterar)\n\nExemplo: Maria Silva | 5531999998888",
-                                    `${currentName} | ${currentPhone}`
-                                );
+                                // Use React dialog instead of window.prompt
+                                openPrompt("Editar Contato (Nome | Número)", `${currentName} | ${currentPhone}`, (input) => {
+                                    if (!input) return;
 
-                                if (input === null) return; // Cancelled
+                                    const parts = input.split('|').map(p => p.trim());
+                                    const newName = parts[0] || "";
+                                    const newPhone = parts[1] || "";
 
-                                const parts = input.split('|').map(p => p.trim());
-                                const newName = parts[0] || "";
-                                const newPhone = parts[1] || "";
+                                    let saved = false;
 
-                                let saved = false;
+                                    if (newName && newName !== currentName) {
+                                        WhatsAppService.setManualNameMapping(activeChat.id, newName);
+                                        saved = true;
+                                    }
 
-                                // Save name if different and not empty
-                                if (newName && newName !== currentName) {
-                                    WhatsAppService.setManualNameMapping(activeChat.id, newName);
-                                    saved = true;
-                                    console.log("✅ Nome salvo:", newName);
-                                }
+                                    if (newPhone && /^\d{10,15}$/.test(newPhone)) {
+                                        WhatsAppService.setManualPhoneMapping(activeChat.id, newPhone);
+                                        saved = true;
+                                    }
 
-                                // Save phone if valid
-                                if (newPhone && /^\d{10,15}$/.test(newPhone)) {
-                                    WhatsAppService.setManualPhoneMapping(activeChat.id, newPhone);
-                                    saved = true;
-                                    console.log("✅ Número salvo:", newPhone);
-                                } else if (newPhone && newPhone !== currentPhone) {
-                                    console.warn("⚠️ Número inválido ignorado:", newPhone);
-                                }
-
-                                if (saved) {
-                                    // Force re-render by updating activeChat
-                                    window.location.reload();
-                                }
+                                    if (saved) {
+                                        window.location.reload();
+                                    }
+                                });
                             }}
                             className="icon-btn"
                             title="Editar Contato"
