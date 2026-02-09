@@ -8,7 +8,7 @@ import AudioPlayer from './AudioPlayer';
 import ImageViewer from './ImageViewer';
 
 const ChatArea = ({ isArchived = false, onBack }) => {
-    const { activeChat, messages, setMessages, clearMessages, briefing, setActiveChat } = useStore();
+    const { activeChat, messages, setMessages, clearMessages, briefing, setActiveChat, chatTags, tags } = useStore();
 
     // GUARD CLAUSE: If no chat is active, don't render anything
     if (!activeChat) return null;
@@ -525,6 +525,28 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                             <ChevronLeft size={24} color="var(--accent-primary)" />
                         </button>
                         <h3 style={{ margin: 0 }}>{activeChat.name && activeChat.name !== formatJid(activeChat.id) ? activeChat.name : formatJid(activeChat.id)}</h3>
+                        {chatTags[activeChat.id] && (() => {
+                            const tag = tags.find(t => t.id === chatTags[activeChat.id]);
+                            if (tag) {
+                                return (
+                                    <span style={{
+                                        fontSize: '11px',
+                                        background: tag.color + '33', // 20% opacity
+                                        color: tag.color,
+                                        padding: '2px 8px',
+                                        borderRadius: '12px',
+                                        border: `1px solid ${tag.color}`,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: '600'
+                                    }}>
+                                        {tag.icon} {tag.name}
+                                    </span>
+                                );
+                            }
+                            return null;
+                        })()}
                     </div>
                 </div>
                 <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -555,7 +577,7 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                             <button
                                 className="icon-btn"
                                 title="Etiquetar"
-                                onClick={() => { /* Tag logic */ }}
+                                onClick={handleTag}
                                 style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
                             >
                                 <Tag size={20} />
