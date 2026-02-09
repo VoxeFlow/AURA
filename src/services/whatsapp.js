@@ -282,13 +282,67 @@ class WhatsAppService {
         });
     }
 
+    // PHONE NUMBER EXTRACTION & MANAGEMENT
+    getManualPhoneMapping(jid) {
+        try {
+            const mappings = JSON.parse(localStorage.getItem('contactPhoneMap') || '{}');
+            return mappings[jid] || null;
+        } catch (e) {
+            console.error('Error reading phone mappings:', e);
+            return null;
+        }
+    }
+
+    setManualPhoneMapping(jid, phoneNumber) {
+        try {
+            const mappings = JSON.parse(localStorage.getItem('contactPhoneMap') || '{}');
+            mappings[jid] = phoneNumber;
+            localStorage.setItem('contactPhoneMap', JSON.stringify(mappings));
+            console.log(`✅ Saved phone mapping: ${jid} → ${phoneNumber}`);
+            return true;
+        } catch (e) {
+            console.error('Error saving phone mapping:', e);
+            return false;
+        }
+    }
+
+    extractPhoneNumber(jid) {
+        if (!jid) return null;
+
+        // Priority 1: Regular phone number JID (e.g., "5531992957555@s.whatsapp.net")
+        if (jid.includes('@s.whatsapp.net') && !jid.includes('@lid')) {
+            const phone = jid.split('@')[0];
+            // Validate it's actually a phone number (10-15 digits)
+            if (/^\d{10,15}$/.test(phone)) {
+                return phone;
+            }
+        }
+
+        // Priority 2: Manual mapping from localStorage
+        const manualPhone = this.getManualPhoneMapping(jid);
+        if (manualPhone) {
+            return manualPhone;
+        }
+
+        // Priority 3: No phone number available
+        return null;
+    }
+
     async sendMessage(jid, text) {
         const { instanceName } = useStore.getState();
         if (!instanceName || !jid || !text) return null;
 
-        // VERIFIED FIX: Extract plain phone number (cURL test confirmed this works)
-        // Input: "5531992957555@s.whatsapp.net" → Output: "5531992957555"
-        const phoneNumber = String(jid).split('@')[0];
+        // CRITICAL: Extract phone number with fallback logic
+        const phoneNumber = this.extractPhoneNumber(jid);
+
+        if (!phoneNumber) {
+            return {
+                error: true,
+                message: `❌ Número de telefone não disponível para este contato.\n\nClique no ícone de edição (✏️) ao lado do nome para adicionar o número manualmente.`,
+                needsPhoneNumber: true,
+                jid: jid
+            };
+        }
 
         const result = await this.request(`/message/sendText/${instanceName}`, 'POST', {
             number: phoneNumber,
