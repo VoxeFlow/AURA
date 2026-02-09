@@ -238,12 +238,21 @@ const ChatArea = ({ isArchived = false, onBack }) => {
         setSending(true);
         try {
             const res = await WhatsAppService.sendMessage(jid, input);
-            if (res) {
+
+            // Check if message was sent successfully
+            if (res && !res.error) {
+                console.log("✅ Mensagem enviada com sucesso");
                 setInput('');
                 loadMessages();
+            } else {
+                // Show error to user
+                const errorMsg = res?.message || 'Erro ao enviar mensagem';
+                console.error("❌ Erro ao enviar:", errorMsg);
+                alert(`❌ ${errorMsg}`);
             }
         } catch (e) {
             console.error("AURA Send Error:", e);
+            alert(`❌ Erro: ${e.message}`);
         }
         setSending(false);
     };

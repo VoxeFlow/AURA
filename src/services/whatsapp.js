@@ -284,15 +284,26 @@ class WhatsAppService {
 
     async sendMessage(jid, text) {
         const { instanceName } = useStore.getState();
-        const cleanJid = this.standardizeJid(jid);
-        if (!instanceName || !cleanJid || !text) return null;
+        if (!instanceName || !jid || !text) return null;
 
-        return await this.request(`/message/sendText/${instanceName}`, 'POST', {
-            number: cleanJid,
-            text: text,
-            delay: 1200,
-            linkPreview: true
+        // VERIFIED FIX: Extract plain phone number (cURL test confirmed this works)
+        // Input: "5531992957555@s.whatsapp.net" → Output: "5531992957555"
+        const phoneNumber = String(jid).split('@')[0];
+
+        const result = await this.request(`/message/sendText/${instanceName}`, 'POST', {
+            number: phoneNumber,
+            text: text
         });
+
+        // Check for "number doesn't exist" error
+        if (result?.response?.message?.[0]?.exists === false) {
+            return {
+                error: true,
+                message: `Número ${phoneNumber} não existe no WhatsApp ou não está acessível.`
+            };
+        }
+
+        return result;
     }
 
     async sendMedia(jid, file, caption = '', isAudio = false) {
