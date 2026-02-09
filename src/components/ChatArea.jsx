@@ -524,7 +524,7 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                         >
                             <ChevronLeft size={24} color="var(--accent-primary)" />
                         </button>
-                        <h3 style={{ margin: 0 }}>{activeChat.name && activeChat.name !== formatJid(activeChat.id) ? activeChat.name : formatJid(activeChat.id)}</h3>
+                        <h3 style={{ margin: 0 }}>{WhatsAppService.getManualNameMapping(activeChat.id) || (activeChat.name && activeChat.name !== formatJid(activeChat.id) ? activeChat.name : formatJid(activeChat.id))}</h3>
                         {chatTags[activeChat.id] && (() => {
                             const tag = tags.find(t => t.id === chatTags[activeChat.id]);
                             if (tag) {
@@ -552,35 +552,35 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                             onClick={() => {
                                 const currentName = activeChat.name || activeChat.pushName || "";
                                 const currentPhone = WhatsAppService.extractPhoneNumber(activeChat.id, activeChat);
-                                
+
                                 // Prompt for name first
                                 const newName = window.prompt("✏️ EDITAR CONTATO\n\n1️⃣ Nome do contato:", currentName);
                                 if (newName === null) return; // User cancelled
-                                
+
                                 // Prompt for phone number
                                 const newPhone = window.prompt("2️⃣ Número do WhatsApp (com DDD, apenas números):\n\nEx: 5531999998888", currentPhone || "");
                                 if (newPhone === null) return; // User cancelled
-                                
+
                                 // Validate phone
                                 if (newPhone && !/^\d{10,15}$/.test(newPhone)) {
                                     alert("❌ Número inválido. Digite entre 10 e 15 números.");
                                     return;
                                 }
-                                
+
                                 // Save name if provided
                                 if (newName && newName.trim()) {
                                     WhatsAppService.setManualNameMapping(activeChat.id, newName.trim());
                                 }
-                                
+
                                 // Save phone if provided
                                 if (newPhone) {
                                     WhatsAppService.setManualPhoneMapping(activeChat.id, newPhone);
                                 }
-                                
+
                                 const savedInfo = [];
                                 if (newName && newName.trim()) savedInfo.push(`Nome: ${newName.trim()}`);
                                 if (newPhone) savedInfo.push(`Número: ${newPhone}`);
-                                
+
                                 if (savedInfo.length > 0) {
                                     alert(`✅ Contato atualizado!\n${savedInfo.join('\n')}\n\nTente enviar a mensagem novamente.`);
                                 }

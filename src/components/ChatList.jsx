@@ -78,7 +78,8 @@ const ChatList = ({ onOpenMenu }) => {
                     const msg = chat.lastMessage?.message || chat.message || {};
 
                     // Improved Name Source Priority (Filter out "Você" which means self)
-                    let name = [
+                    // Priority 1: Manually saved name
+                    let name = WhatsAppService.getManualNameMapping(jid) || [
                         chat.name,
                         chat.pushName,
                         chat.verifiedName,
