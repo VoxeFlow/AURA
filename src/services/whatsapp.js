@@ -366,12 +366,12 @@ class WhatsAppService {
         return null;
     }
 
-    async sendMessage(jid, text) {
+    async sendMessage(jid, text, chatData = null) {
         const { instanceName } = useStore.getState();
         if (!instanceName || !jid || !text) return null;
 
-        // CRITICAL: Extract phone number with fallback logic
-        const phoneNumber = this.extractPhoneNumber(jid);
+        // CRITICAL: Extract phone number with fallback logic (pass chatData for metadata extraction)
+        const phoneNumber = this.extractPhoneNumber(jid, chatData);
 
         if (!phoneNumber) {
             return {
