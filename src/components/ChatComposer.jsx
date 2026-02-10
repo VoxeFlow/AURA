@@ -18,103 +18,111 @@ const ChatComposer = ({
         <form className="message-input-area" onSubmit={handleSend} style={{ position: 'relative' }}>
             {showAttachMenu && (
                 <div
-                    className="attach-menu"
+                    className="attach-menu glass-panel"
                     style={{
                         position: 'absolute',
-                        bottom: '60px',
-                        left: '10px',
-                        background: '#1e293b',
-                        border: '1px solid #334155',
-                        borderRadius: '12px',
-                        padding: '8px',
+                        bottom: '75px',
+                        left: '0',
+                        background: 'rgba(255, 255, 255, 0.8)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(0, 0, 0, 0.05)',
+                        borderRadius: '24px',
+                        padding: '12px',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '8px',
+                        gap: '4px',
                         zIndex: 100,
-                        minWidth: '200px',
-                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
+                        minWidth: '220px',
+                        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                        animation: 'fadeInUp 0.3s ease-out'
                     }}
                 >
                     <button
                         type="button"
-                        className="menu-item"
-                        onClick={() => handleAttachmentClick('Fotos/Vídeos')}
+                        className="menu-item-v3"
+                        onClick={() => { handleAttachmentClick('Fotos/Vídeos'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
                             background: 'transparent',
                             border: 'none',
-                            color: '#f8fafc',
+                            color: '#1d1d1f',
                             cursor: 'pointer',
-                            padding: '10px 12px',
+                            padding: '12px 16px',
                             fontSize: '14px',
+                            fontWeight: '600',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '8px',
-                            transition: 'background 0.2s',
+                            borderRadius: '16px',
+                            transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = '#334155')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)'; e.currentTarget.style.transform = 'translateX(5px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
                     >
-                        <div style={{ background: '#ec4899', padding: '6px', borderRadius: '50%', display: 'flex' }}>
+                        <div style={{ background: 'linear-gradient(135deg, #FF2D55, #FF375F)', padding: '8px', borderRadius: '12px', display: 'flex', boxShadow: '0 4px 10px rgba(255, 45, 85, 0.2)' }}>
                             <Image size={18} color="#fff" />
                         </div>
-                        <span style={{ fontWeight: 500 }}>Fotos e Vídeos</span>
+                        <span>Fotos e Vídeos</span>
                     </button>
+
                     <button
                         type="button"
-                        className="menu-item"
-                        onClick={() => handleAttachmentClick('Câmera')}
+                        className="menu-item-v3"
+                        onClick={() => { handleAttachmentClick('Câmera'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
                             background: 'transparent',
                             border: 'none',
-                            color: '#f8fafc',
+                            color: '#1d1d1f',
                             cursor: 'pointer',
-                            padding: '10px 12px',
+                            padding: '12px 16px',
                             fontSize: '14px',
+                            fontWeight: '600',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '8px',
-                            transition: 'background 0.2s',
+                            borderRadius: '16px',
+                            transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = '#334155')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)'; e.currentTarget.style.transform = 'translateX(5px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
                     >
-                        <div style={{ background: '#ef4444', padding: '6px', borderRadius: '50%', display: 'flex' }}>
+                        <div style={{ background: 'linear-gradient(135deg, #FF3B30, #FF453A)', padding: '8px', borderRadius: '12px', display: 'flex', boxShadow: '0 4px 10px rgba(255, 59, 48, 0.2)' }}>
                             <Camera size={18} color="#fff" />
                         </div>
-                        <span style={{ fontWeight: 500 }}>Câmera</span>
+                        <span>Câmera</span>
                     </button>
+
                     <button
                         type="button"
-                        className="menu-item"
-                        onClick={() => handleAttachmentClick('Documento')}
+                        className="menu-item-v3"
+                        onClick={() => { handleAttachmentClick('Documento'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
                             background: 'transparent',
                             border: 'none',
-                            color: '#f8fafc',
+                            color: '#1d1d1f',
                             cursor: 'pointer',
-                            padding: '10px 12px',
+                            padding: '12px 16px',
                             fontSize: '14px',
+                            fontWeight: '600',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '8px',
-                            transition: 'background 0.2s',
+                            borderRadius: '16px',
+                            transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = '#334155')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)'; e.currentTarget.style.transform = 'translateX(5px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
                     >
-                        <div style={{ background: '#8b5cf6', padding: '6px', borderRadius: '50%', display: 'flex' }}>
+                        <div style={{ background: 'linear-gradient(135deg, #5856D6, #5E5CE6)', padding: '8px', borderRadius: '12px', display: 'flex', boxShadow: '0 4px 10px rgba(88, 86, 214, 0.2)' }}>
                             <FileText size={18} color="#fff" />
                         </div>
-                        <span style={{ fontWeight: 500 }}>Documento</span>
+                        <span>Documento</span>
                     </button>
                 </div>
             )}
