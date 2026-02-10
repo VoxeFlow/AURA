@@ -21,106 +21,106 @@ const ChatComposer = ({
                     className="attach-menu glass-panel"
                     style={{
                         position: 'absolute',
-                        bottom: '75px',
+                        bottom: '85px',
                         left: '0',
-                        background: 'rgba(255, 255, 255, 0.8)',
-                        backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid rgba(0, 0, 0, 0.05)',
-                        borderRadius: '24px',
-                        padding: '12px',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(30px)',
+                        WebkitBackdropFilter: 'blur(30px)',
+                        border: '1px solid rgba(0, 0, 0, 0.1)',
+                        borderRadius: '32px',
+                        padding: '16px',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '4px',
-                        zIndex: 100,
-                        minWidth: '220px',
-                        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-                        animation: 'fadeInUp 0.3s ease-out'
+                        gap: '8px',
+                        zIndex: 1000,
+                        minWidth: '260px',
+                        boxShadow: '0 30px 60px -12px rgba(0, 0, 0, 0.3)',
+                        animation: 'fadeInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                     }}
                 >
                     <button
                         type="button"
-                        className="menu-item-v3"
+                        className="menu-item-v4"
                         onClick={() => { handleAttachmentClick('Fotos/Vídeos'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '12px',
+                            gap: '16px',
                             background: 'transparent',
                             border: 'none',
                             color: '#1d1d1f',
                             cursor: 'pointer',
-                            padding: '12px 16px',
-                            fontSize: '14px',
-                            fontWeight: '600',
+                            padding: '16px 20px',
+                            fontSize: '16px',
+                            fontWeight: '700',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '16px',
-                            transition: 'all 0.2s',
+                            borderRadius: '24px',
+                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)'; e.currentTarget.style.transform = 'translateX(5px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'scale(1.02) translateX(10px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1) translateX(0)'; }}
                     >
-                        <div style={{ background: 'linear-gradient(135deg, #FF2D55, #FF375F)', padding: '8px', borderRadius: '12px', display: 'flex', boxShadow: '0 4px 10px rgba(255, 45, 85, 0.2)' }}>
-                            <Image size={18} color="#fff" />
+                        <div style={{ background: 'linear-gradient(135deg, #FF2D55, #FF375F)', padding: '12px', borderRadius: '16px', display: 'flex', boxShadow: '0 8px 20px rgba(255, 45, 85, 0.4)', color: '#fff' }}>
+                            <Image size={22} />
                         </div>
                         <span>Fotos e Vídeos</span>
                     </button>
 
                     <button
                         type="button"
-                        className="menu-item-v3"
+                        className="menu-item-v4"
                         onClick={() => { handleAttachmentClick('Câmera'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '12px',
+                            gap: '16px',
                             background: 'transparent',
                             border: 'none',
                             color: '#1d1d1f',
                             cursor: 'pointer',
-                            padding: '12px 16px',
-                            fontSize: '14px',
-                            fontWeight: '600',
+                            padding: '16px 20px',
+                            fontSize: '16px',
+                            fontWeight: '700',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '16px',
-                            transition: 'all 0.2s',
+                            borderRadius: '24px',
+                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)'; e.currentTarget.style.transform = 'translateX(5px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'scale(1.02) translateX(10px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1) translateX(0)'; }}
                     >
-                        <div style={{ background: 'linear-gradient(135deg, #FF3B30, #FF453A)', padding: '8px', borderRadius: '12px', display: 'flex', boxShadow: '0 4px 10px rgba(255, 59, 48, 0.2)' }}>
-                            <Camera size={18} color="#fff" />
+                        <div style={{ background: 'linear-gradient(135deg, #FF3B30, #FF453A)', padding: '12px', borderRadius: '16px', display: 'flex', boxShadow: '0 8px 20px rgba(255, 59, 48, 0.4)', color: '#fff' }}>
+                            <Camera size={22} />
                         </div>
                         <span>Câmera</span>
                     </button>
 
                     <button
                         type="button"
-                        className="menu-item-v3"
+                        className="menu-item-v4"
                         onClick={() => { handleAttachmentClick('Documento'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '12px',
+                            gap: '16px',
                             background: 'transparent',
                             border: 'none',
                             color: '#1d1d1f',
                             cursor: 'pointer',
-                            padding: '12px 16px',
-                            fontSize: '14px',
-                            fontWeight: '600',
+                            padding: '16px 20px',
+                            fontSize: '16px',
+                            fontWeight: '700',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '16px',
-                            transition: 'all 0.2s',
+                            borderRadius: '24px',
+                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)'; e.currentTarget.style.transform = 'translateX(5px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'scale(1.02) translateX(10px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1) translateX(0)'; }}
                     >
-                        <div style={{ background: 'linear-gradient(135deg, #5856D6, #5E5CE6)', padding: '8px', borderRadius: '12px', display: 'flex', boxShadow: '0 4px 10px rgba(88, 86, 214, 0.2)' }}>
-                            <FileText size={18} color="#fff" />
+                        <div style={{ background: 'linear-gradient(135deg, #5856D6, #5E5CE6)', padding: '12px', borderRadius: '16px', display: 'flex', boxShadow: '0 8px 20px rgba(88, 86, 214, 0.4)', color: '#fff' }}>
+                            <FileText size={22} />
                         </div>
                         <span>Documento</span>
                     </button>
