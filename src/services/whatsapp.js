@@ -463,6 +463,7 @@ class WhatsAppService {
 
         // FINAL DEDUPLICATION: Ensure one chat per Phone Number
         // Sometimes the mapping logic above might miss edge cases if LIDs and Phones don't have a direct link yet.
+        console.log(`AURA: Running deduplication on ${sorted.length} chats...`);
         const uniquePhones = new Set();
         return sorted.filter(chat => {
             const rawId = chat.id || chat.jid || chat.remoteJid;
