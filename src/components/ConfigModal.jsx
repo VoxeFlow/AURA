@@ -67,20 +67,7 @@ const ConfigModal = ({ isOpen, onClose }) => {
 
                     <div className="divider" style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '5px 0' }}></div>
 
-                    <div className="input-group">
-                        <label style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <Phone size={16} /> Telefone do Gestor (AURA Loop)
-                        </label>
-                        <small style={{ display: 'block', marginBottom: '8px', opacity: 0.7 }}>
-                            AURA enviará perguntas para este número quando não souber algo.
-                        </small>
-                        <input
-                            type="text"
-                            value={localConfig.managerPhone}
-                            onChange={e => setLocalConfig({ ...localConfig, managerPhone: e.target.value })}
-                            placeholder="5511999999999"
-                        />
-                    </div>
+
                 </div>
 
                 <div className="modal-footer" style={{ marginTop: '20px' }}>

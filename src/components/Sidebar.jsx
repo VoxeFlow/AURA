@@ -1,4 +1,4 @@
-import { X, LayoutDashboard, Kanban, History, Settings, LogOut } from 'lucide-react';
+import { X, LayoutDashboard, Kanban, History, Settings, LogOut, Brain, Zap } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import logoLight from '../assets/logo-light.png';
 import logoDark from '../assets/logo-dark.png';
@@ -35,8 +35,48 @@ const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing, onLogout, isOpen
                 <div className="sidebar-footer">
                     <div style={{ padding: '10px 0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
                         <div
+                            title="AURA Brain"
+                            onClick={onOpenBriefing}
+                            className="sidebar-action-btn"
+                            style={{
+                                cursor: 'pointer',
+                                padding: '10px',
+                                borderRadius: '12px',
+                                color: 'var(--accent-primary)',
+                                transition: 'all 0.3s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'rgba(197, 160, 89, 0.1)'
+                            }}
+                        >
+                            <Brain size={22} />
+                        </div>
+
+                        <div
+                            title="Conexão WhatsApp"
+                            onClick={onOpenConnect}
+                            className="sidebar-action-btn"
+                            style={{
+                                cursor: 'pointer',
+                                padding: '10px',
+                                borderRadius: '12px',
+                                color: 'var(--text-muted)',
+                                transition: 'all 0.3s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-primary)'; e.currentTarget.style.background = 'rgba(197, 160, 89, 0.1)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
+                        >
+                            <Zap size={22} />
+                        </div>
+
+                        <div
                             title="Configurações Aura"
                             onClick={onOpenConfig}
+                            className="sidebar-action-btn"
                             style={{
                                 cursor: 'pointer',
                                 padding: '10px',

@@ -258,6 +258,41 @@ const BriefingModal = ({ isOpen, onClose }) => {
                                 </div>
                             )}
 
+                            {/* MANAGER PHONE SETTING - NEW LOCATION */}
+                            <div className="manager-phone-settings" style={{
+                                marginBottom: '30px',
+                                padding: '24px',
+                                background: '#FFFFFF',
+                                border: '1px solid rgba(197, 160, 89, 0.3)',
+                                borderRadius: '20px',
+                                boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
+                            }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#1d1d1f', fontWeight: '800', fontSize: '15px', marginBottom: '8px' }}>
+                                    <RefreshCw size={18} color="var(--accent-primary)" /> Telefone do Gestor (AURA Loop)
+                                </label>
+                                <p style={{ margin: '0 0 15px 0', fontSize: '12px', color: '#86868b' }}>
+                                    Defina o WhatsApp para onde a AURA enviará dúvidas táticas quando não souber responder um cliente.
+                                </p>
+                                <div style={{ position: 'relative' }}>
+                                    <input
+                                        type="text"
+                                        value={useStore.getState().managerPhone}
+                                        onChange={e => setConfig({ managerPhone: e.target.value })}
+                                        placeholder="Ex: 5511999999999"
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 15px',
+                                            background: '#F9F9FA',
+                                            border: '1px solid #E5E5E7',
+                                            borderRadius: '12px',
+                                            fontSize: '14px',
+                                            color: '#1d1d1f',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
                             {safeKB.length === 0 && !hasRawBriefing ? (
                                 <div style={{ textAlign: 'center', padding: '60px 20px' }}>
                                     <div style={{ background: '#F9F9FA', display: 'inline-flex', padding: '20px', borderRadius: '50%', marginBottom: '20px' }}>

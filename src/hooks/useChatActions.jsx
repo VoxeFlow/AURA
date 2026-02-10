@@ -26,20 +26,7 @@ export function useChatActions({ activeChat, openConfirm, setActiveChat }) {
         );
     }, [activeChat, openConfirm]);
 
-    const handleManualFix = useCallback(() => {
-        const current = WhatsAppService.extractPhoneNumber(activeChat.id, activeChat);
-        const newPhone = window.prompt(
-            '✏️ CORREÇÃO MANUAL\n\nEste contato está sem número (apenas ID). Para conseguir responder, digite o número correto do WhatsApp (com DDD, apenas números):\n\nEx: 5531999998888',
-            current || ''
-        );
 
-        if (newPhone && /^\d{10,15}$/.test(newPhone)) {
-            WhatsAppService.setManualPhoneMapping(activeChat.id, newPhone, activeChat);
-            alert(`✅ Número ${newPhone} salvo para este contato!\nTente enviar a mensagem novamente.`);
-        } else if (newPhone) {
-            alert('❌ Número inválido. Digite entre 10 e 15 números (ex: 55319...)');
-        }
-    }, [activeChat]);
 
     const handleUnarchive = useCallback(() => {
         const changed = unarchiveChat(activeChat.id);
@@ -58,7 +45,6 @@ export function useChatActions({ activeChat, openConfirm, setActiveChat }) {
 
     return {
         handleTag,
-        handleManualFix,
         handleUnarchive,
         handleArchive,
     };

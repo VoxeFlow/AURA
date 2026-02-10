@@ -64,7 +64,7 @@ const ChatArea = ({ isArchived = false, onBack }) => {
         openPrompt,
     });
 
-    const { handleTag, handleManualFix, handleUnarchive, handleArchive } = useChatActions({
+    const { handleTag, handleUnarchive, handleArchive } = useChatActions({
         activeChat,
         openConfirm,
         setActiveChat,
@@ -101,7 +101,6 @@ const ChatArea = ({ isArchived = false, onBack }) => {
                 onTag={handleTag}
                 onArchive={handleArchive}
                 onUnarchive={handleUnarchive}
-                onManualFix={handleManualFix}
             />
 
             <div className="main-grid">

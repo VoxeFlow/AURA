@@ -12,7 +12,6 @@ const ChatHeader = ({
     onTag,
     onArchive,
     onUnarchive,
-    onManualFix,
 }) => {
     return (
         <header className="chat-header glass-panel">
@@ -51,21 +50,7 @@ const ChatHeader = ({
                         );
                     })()}
 
-                    <button
-                        onClick={onManualFix}
-                        className="icon-btn"
-                        title="Corrigir Número"
-                        style={{
-                            marginLeft: '8px',
-                            padding: '4px',
-                            background: 'rgba(255,100,100,0.1)',
-                            color: 'var(--accent-primary)',
-                            borderRadius: '50%',
-                            border: '1px solid rgba(255,100,100,0.3)',
-                        }}
-                    >
-                        <Pencil size={14} />
-                    </button>
+
                 </div>
             </div>
             <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
