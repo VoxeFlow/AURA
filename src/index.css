@@ -606,6 +606,7 @@ input:focus {
   margin-bottom: 12px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -797,6 +798,50 @@ input:focus {
   /* Changed from white to dark */
   font-weight: 600;
   text-align: right;
+}
+
+/* Message Date Separators */
+.date-separator {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  opacity: 0.8;
+}
+
+.date-separator span {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Timestamp inside message */
+.msg-time {
+  display: block;
+  font-size: 10px;
+  text-align: right;
+  margin-top: 4px;
+  opacity: 0.6;
+  line-height: 1;
+}
+
+.message.out .msg-time {
+  color: inherit;
+  font-weight: 500;
+}
+
+.message.in .msg-time {
+  color: var(--text-muted);
+}
+
+/* Adjust message padding to accommodate time */
+.message {
+  padding-bottom: 6px;
+  position: relative;
+  min-width: 80px;
 }
 
 .v3-btn {
@@ -1291,4 +1336,52 @@ input:focus {
 .mobile-back-btn,
 .sidebar-overlay {
   display: none;
+}
+
+/* ========================================= */
+/* BETA - New Features (Timestamps & Grouping) */
+/* ========================================= */
+
+/* Message Date Separators */
+.date-separator {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  opacity: 0.8;
+}
+
+.date-separator span {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Timestamp inside message */
+.msg-time {
+  display: block;
+  font-size: 10px;
+  text-align: right;
+  margin-top: 4px;
+  opacity: 0.6;
+  line-height: 1;
+}
+
+.message.out .msg-time {
+  color: inherit;
+  font-weight: 500;
+}
+
+.message.in .msg-time {
+  color: var(--text-muted);
+}
+
+/* Adjust message padding to accommodate time */
+.message {
+  padding-bottom: 6px;
+  position: relative;
+  min-width: 80px;
 }
