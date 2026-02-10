@@ -42,7 +42,7 @@ export default function LoginScreen({ onLogin }) {
                     <div className="logo" style={{ marginBottom: '20px' }}>
                         <img src={logoDark} alt="AURA Logo" style={{ width: '120px', height: 'auto' }} />
                     </div>
-                    <p className="subtitle">Business Copilot</p>
+
                 </div>
 
                 <form onSubmit={handleSubmit} className="login-form">

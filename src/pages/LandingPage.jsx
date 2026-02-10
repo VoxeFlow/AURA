@@ -243,7 +243,6 @@ const LandingPage = ({ onGetStarted }) => {
                 <div className="footer-content">
                     <div className="footer-logo">
                         <img src={logoLight} alt="AURA" style={{ height: '32px', marginBottom: '10px' }} />
-                        <p>Business Copilot</p>
                     </div>
                     <div className="footer-links">
                         <a href="#features">Recursos</a>
