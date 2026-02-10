@@ -127,13 +127,11 @@
 .logo-icon {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, var(--gold) 0%, #C19B2E 100%);
-    border-radius: 16px;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-md);
-    color: var(--white);
+    color: var(--accent-primary);
 }
 
 .logo-hero h1 {
