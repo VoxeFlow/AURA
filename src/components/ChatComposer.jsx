@@ -21,107 +21,101 @@ const ChatComposer = ({
                     className="attach-menu glass-panel"
                     style={{
                         position: 'absolute',
-                        bottom: '85px',
+                        bottom: '75px',
                         left: '0',
-                        background: 'rgba(255, 255, 255, 0.95)',
+                        background: 'rgba(18, 18, 18, 0.95)',
                         backdropFilter: 'blur(30px)',
                         WebkitBackdropFilter: 'blur(30px)',
-                        border: '1px solid rgba(0, 0, 0, 0.1)',
-                        borderRadius: '32px',
-                        padding: '16px',
+                        border: '1px solid rgba(197, 160, 89, 0.2)',
+                        borderRadius: '20px',
+                        padding: '8px',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '8px',
+                        gap: '4px',
                         zIndex: 1000,
-                        minWidth: '260px',
-                        boxShadow: '0 30px 60px -12px rgba(0, 0, 0, 0.3)',
-                        animation: 'fadeInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                        minWidth: '220px',
+                        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)',
+                        animation: 'fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
                     }}
                 >
                     <button
                         type="button"
-                        className="menu-item-v4"
+                        className="menu-item-v5"
                         onClick={() => { handleAttachmentClick('Fotos/Vídeos'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '16px',
+                            gap: '12px',
                             background: 'transparent',
                             border: 'none',
-                            color: '#1d1d1f',
+                            color: '#ffffff',
                             cursor: 'pointer',
-                            padding: '16px 20px',
-                            fontSize: '16px',
-                            fontWeight: '700',
+                            padding: '12px 16px',
+                            fontSize: '15px',
+                            fontWeight: '500',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '24px',
-                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            borderRadius: '12px',
+                            transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'scale(1.02) translateX(10px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1) translateX(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(197, 160, 89, 0.15)'; e.currentTarget.style.color = 'var(--accent-primary)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#ffffff'; }}
                     >
-                        <div style={{ background: 'linear-gradient(135deg, #FF2D55, #FF375F)', padding: '12px', borderRadius: '16px', display: 'flex', boxShadow: '0 8px 20px rgba(255, 45, 85, 0.4)', color: '#fff' }}>
-                            <Image size={22} />
-                        </div>
+                        <Image size={20} style={{ color: 'var(--accent-primary)' }} />
                         <span>Fotos e Vídeos</span>
                     </button>
 
                     <button
                         type="button"
-                        className="menu-item-v4"
+                        className="menu-item-v5"
                         onClick={() => { handleAttachmentClick('Câmera'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '16px',
+                            gap: '12px',
                             background: 'transparent',
                             border: 'none',
-                            color: '#1d1d1f',
+                            color: '#ffffff',
                             cursor: 'pointer',
-                            padding: '16px 20px',
-                            fontSize: '16px',
-                            fontWeight: '700',
+                            padding: '12px 16px',
+                            fontSize: '15px',
+                            fontWeight: '500',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '24px',
-                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            borderRadius: '12px',
+                            transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'scale(1.02) translateX(10px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1) translateX(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(197, 160, 89, 0.15)'; e.currentTarget.style.color = 'var(--accent-primary)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#ffffff'; }}
                     >
-                        <div style={{ background: 'linear-gradient(135deg, #FF3B30, #FF453A)', padding: '12px', borderRadius: '16px', display: 'flex', boxShadow: '0 8px 20px rgba(255, 59, 48, 0.4)', color: '#fff' }}>
-                            <Camera size={22} />
-                        </div>
-                        <span>Câmera</span>
+                        <Camera size={20} style={{ color: 'var(--accent-primary)' }} />
+                        <span>Usar Câmera</span>
                     </button>
 
                     <button
                         type="button"
-                        className="menu-item-v4"
+                        className="menu-item-v5"
                         onClick={() => { handleAttachmentClick('Documento'); setShowAttachMenu(false); }}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '16px',
+                            gap: '12px',
                             background: 'transparent',
                             border: 'none',
-                            color: '#1d1d1f',
+                            color: '#ffffff',
                             cursor: 'pointer',
-                            padding: '16px 20px',
-                            fontSize: '16px',
-                            fontWeight: '700',
+                            padding: '12px 16px',
+                            fontSize: '15px',
+                            fontWeight: '500',
                             textAlign: 'left',
                             width: '100%',
-                            borderRadius: '24px',
-                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            borderRadius: '12px',
+                            transition: 'all 0.2s',
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'scale(1.02) translateX(10px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'scale(1) translateX(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(197, 160, 89, 0.15)'; e.currentTarget.style.color = 'var(--accent-primary)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#ffffff'; }}
                     >
-                        <div style={{ background: 'linear-gradient(135deg, #5856D6, #5E5CE6)', padding: '12px', borderRadius: '16px', display: 'flex', boxShadow: '0 8px 20px rgba(88, 86, 214, 0.4)', color: '#fff' }}>
-                            <FileText size={22} />
-                        </div>
+                        <FileText size={20} style={{ color: 'var(--accent-primary)' }} />
                         <span>Documento</span>
                     </button>
                 </div>
