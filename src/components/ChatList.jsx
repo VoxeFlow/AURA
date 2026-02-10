@@ -29,7 +29,27 @@ const ChatList = ({ onOpenMenu }) => {
     // Filter out archived chats
     const archivedChats = JSON.parse(localStorage.getItem('archived_chats') || '[]');
 
-    const filtered = (Array.isArray(chats) ? chats : [])
+    const deduplicated = (Array.isArray(chats) ? chats : [])
+        .reduce((acc, chat) => {
+            const jid = chat.remoteJid || chat.jid || chat.id;
+            const phone = WhatsAppService.extractPhoneNumber(jid, chat) || jid;
+            
+            // Prefer regular WhatsApp JID over LID
+            const isLid = jid.includes('@lid');
+            const existing = acc[phone];
+
+            if (!existing || (existing.isLid && !isLid)) {
+                acc[phone] = { ...chat, isLid };
+            } else if (existing.isLid === isLid) {
+                // Same type, keep most recent
+                if (getTimestamp(chat) > getTimestamp(existing)) {
+                    acc[phone] = { ...chat, isLid };
+                }
+            }
+            return acc;
+        }, {});
+
+    const filtered = Object.values(deduplicated)
         .filter(c => {
             const jid = c.remoteJid || c.jid || c.id;
             // Exclude archived chats from main list
