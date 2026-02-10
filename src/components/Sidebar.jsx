@@ -1,3 +1,5 @@
+import { X, LayoutDashboard, Kanban, History, Settings, LogOut } from 'lucide-react';
+import { useStore } from '../store/useStore';
 import logoDark from '../assets/logo-dark.png';
 
 const Sidebar = ({ onOpenConfig, onOpenConnect, onOpenBriefing, onLogout, isOpen, onClose }) => {
