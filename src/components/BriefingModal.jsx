@@ -11,6 +11,8 @@ const BriefingModal = ({ isOpen, onClose }) => {
     const [lastAnalysis, setLastAnalysis] = useState("");
     const [editingId, setEditingId] = useState(null);
     const [tempAnswer, setTempAnswer] = useState("");
+    const [confirmReset, setConfirmReset] = useState(false);
+    const [isResetting, setIsResetting] = useState(false);
 
     // Start in dashboard view by default
     useEffect(() => {
@@ -129,22 +131,36 @@ const BriefingModal = ({ isOpen, onClose }) => {
                     <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                         <button
                             onClick={() => {
-                                if (window.confirm("⚠️ TEM CERTEZA?\n\nIsso apagará TODO o conhecimento da AURA e reiniciará o sistema.")) {
-                                    // 1. ZUSTAND RESET
-                                    useStore.getState().resetBrain();
+                                if (isResetting) return;
 
-                                    // 2. HARD NUKING STORAGE (Bypass Zustand)
-                                    localStorage.removeItem('aura-storage');
-
-                                    // 3. FORCE RELOAD
-                                    setTimeout(() => window.location.reload(), 100);
+                                if (!confirmReset) {
+                                    setConfirmReset(true);
+                                    return;
                                 }
+
+                                // EXECUTE RESET
+                                setIsResetting(true);
+                                useStore.getState().resetBrain();
+                                localStorage.removeItem('aura-storage');
+
+                                // DELAY RELOAD FOR UX & PERSISTENCE
+                                setTimeout(() => window.location.reload(), 1500);
                             }}
-                            style={{ background: '#FFF5F5', color: '#ff4d4d', border: '1px solid #FFEBEB', padding: '8px 16px', borderRadius: '10px', cursor: 'pointer', fontSize: '11px', fontWeight: 'bold' }}
+                            style={{
+                                background: isResetting ? '#E5E5E7' : (confirmReset ? '#ff4d4d' : '#FFF5F5'),
+                                color: isResetting ? '#86868b' : (confirmReset ? '#FFFFFF' : '#ff4d4d'),
+                                border: confirmReset ? 'none' : '1px solid #FFEBEB',
+                                padding: '8px 16px',
+                                borderRadius: '10px',
+                                cursor: isResetting ? 'wait' : 'pointer',
+                                fontSize: '11px',
+                                fontWeight: 'bold',
+                                transition: 'all 0.2s'
+                            }}
                         >
-                            Resetar Cérebro
+                            {isResetting ? "Limpando..." : (confirmReset ? "TEM CERTEZA?" : "Resetar Cérebro")}
                         </button>
-                        <span style={{ fontSize: '9px', color: '#ccc' }}>v11.3.12</span>
+                        <span style={{ fontSize: '9px', color: '#ccc' }}>v11.3.13</span>
                         <X size={24} color="#1d1d1f" onClick={onClose} style={{ cursor: 'pointer', opacity: 0.3 }} />
                     </div>
                 </div>
