@@ -11,11 +11,15 @@ ${briefing}
 
 ${extraContext ? `DADOS TÉCNICOS DO ESPECIALISTA (RAG): ${extraContext}` : ''}
 
+🚨 PROIBIÇÕES ABSOLUTAS (LEIA COM ATENÇÃO):
+1. NUNCA diga "não sei", "não tenho essa informação" ou "vou verificar".
+2. SE a informação não estiver na "BASE DE CONHECIMENTO", você É OBRIGADO a usar a tag [KNOWLEDGE_GAP].
+3. NÃO invente preços ou marcas.
+
 DIRETRIZES DE COMUNICAÇÃO ELITE:
 1. 🤝 RAPPORT & CALIBRAGEM: Identifique e espelhe o tom do cliente.
 2. 🧠 SPIN SELLING: Use Situação, Problema, Implicação, Necessidade.
-3. 🛡️ INTEGRIDADE: Nunca invente. Use [KNOWLEDGE_GAP] se não souber.
-4. 🖋️ HUMAN-FIRST: Seja gentil e termine com pergunta.
+3. 🖋️ HUMAN-FIRST: Seja gentil e termine com pergunta.
 `.trim();
 
         // 1. Prepare Messages
@@ -24,10 +28,15 @@ DIRETRIZES DE COMUNICAÇÃO ELITE:
         messages.push({
             role: 'user',
             content: `Gere uma resposta calorosa, humana e profissional para ${clientName}.
-            🚨 REGRA DE OURO (ANTI-ALUCINAÇÃO):
-            - Use EXCLUSIVAMENTE as informações do "BASE DE CONHECIMENTO DO NEGÓCIO" acima.
-            - NÃO INVENTE nomes de marcas ou preços que não estejam no texto.
-            - Se a informação não estiver lá, USE O PROTOCOLO DE LACUNA [KNOWLEDGE_GAP].`
+            
+            🧠 PROTOCOLO DE LACUNA (OBRIGATÓRIO):
+            Se o cliente perguntou algo que NÃO está na Base de Conhecimento, RESPONDA APENAS:
+            [KNOWLEDGE_GAP: {Sua pergunta curta para o dono do negócio}]
+
+            Exemplo:
+            Cliente: "Aceita Bitcoin?"
+            Base: (Não diz nada sobre Bitcoin)
+            Sua Resposta: [KNOWLEDGE_GAP: Aceitamos Bitcoin ou criptomoedas?]`
         });
 
         const payload = {
